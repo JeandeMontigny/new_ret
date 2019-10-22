@@ -15,20 +15,54 @@
 #define NEW_RET_H_
 
 #include "biodynamo.h"
+#include "util_methods.h"
 
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  Simulation simulation(argc, argv);
+  int maxStep = 1600;
+  int cubeDim = 500;
+  int num_cells = 80; // x4 to have c/mm2 density
+  double diffusion_coef = 0.65;
+  double decay_const = 0.1;
 
-  // Define initial model - in this example: single cell at origin
-  auto* rm = simulation.GetResourceManager();
-  rm->push_back(new Cell(30));
+  double cellDensity = (double)num_cells * 1e6 / (cubeDim * cubeDim);
+  cout << "cell density: " << cellDensity << " cells per mm^2" << endl;
+
+  auto set_param = [&](Param* param) {
+    // Create an artificial bounds for the simulation space
+    param->bound_space_ = true;
+    param->min_bound_ = 0;
+    param->max_bound_ = cubeDim + 20;
+    param->run_mechanical_interactions_ = true;
+  };
+
+  Simulation simulation(argc, argv, set_param);
+  // auto* rm = simulation.GetResourceManager();
+  auto* scheduler = simulation.GetScheduler();
+  auto* param = simulation.GetParam();
+  auto* random = simulation.GetRandom();
+
+  int mySeed = rand() % 10000;
+  // mySeed = 9784;
+  random->SetSeed(mySeed);
+  cout << "modelling with seed " << mySeed << endl;
+
+  // create cells
+  CellCreator(0, 500, num_cells, 0);
+
+  // Order: substance_name, diffusion_coefficient, decay_constant, resolution
+  ModelInitializer::DefineSubstance(dg_0_, "on", diffusion_coef, decay_const,
+                                    param->max_bound_/2);
 
   // Run simulation for one timestep
-  simulation.GetScheduler()->Simulate(1);
 
-  std::cout << "Simulation completed successfully!" << std::endl;
+  for (int i = 0; i <= maxStep/100; i++) {
+    scheduler->Simulate(100);
+    cout << "step " << i*100 << " out of " << maxStep
+         << " ; RI = " << getRI(0) << endl;
+  }
+
   return 0;
 }
 
