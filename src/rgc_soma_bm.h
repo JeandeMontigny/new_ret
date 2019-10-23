@@ -33,21 +33,21 @@ namespace bdm {
           dg->GetGradient(position, &gradient);
           gradient_z = gradient * 0.2;
           gradient_z[0] = 0; gradient_z[1] = 0;
-          diff_gradient = gradient * -0.2;
+          diff_gradient = gradient * -0.1;
           diff_gradient[2] = 0;
           concentration = dg->GetConcentration(position);
         }
 
         bool withMovement = true;
-        double movementThreshold = 1.010; // 03707 // 0371 - 03705
+        double movementThreshold = 2.0; // 03707 // 0371 - 03705
         bool withDeath = true;
-        double deathThreshold = 1.154; // 1.118 // 0532 // 0524 - 0523
+        double deathThreshold = 3.35; // 1.118 // 0532 // 0524 - 0523
         // 1.155 // 1.154
 
         if (cellClock < 1900 && cellClock%3==0 ) {
           // // add small random movements
           cell->UpdatePosition(
-              {random->Uniform(-0.001, 0.001), random->Uniform(-0.001, 0.001), 0});
+              {random->Uniform(-0.01, 0.01), random->Uniform(-0.01, 0.01), 0});
           // cell growth
           if (cell->GetDiameter() < 14 && random->Uniform(0, 1) < 0.02) {
             cell->ChangeVolume(2000);
@@ -57,6 +57,7 @@ namespace bdm {
         }
 
         /* -- cell movement -- */
+        if (cellClock > 1200) {movementThreshold=1.9;}
         if (withMovement && cellClock >= 100 && cellClock < 2800
           && concentration >= movementThreshold && cellClock%3==0) {
             // cell movement based on homotype substance gradient
@@ -77,7 +78,7 @@ namespace bdm {
               cell->UpdatePosition(gradient_z);
               // cell death depending on homotype substance concentration
               if (concentration > deathThreshold
-                  && random->Uniform(0, 1) < 0.25) { // 0.25
+                  && random->Uniform(0, 1) < 0.1) { // 0.25
                 cell->RemoveFromSimulation();
               }
             } // end cell death
@@ -109,9 +110,8 @@ namespace bdm {
         if (cell->GetCellType() == 0) {
           dg = rm->GetDiffusionGrid(dg_0_);
         }
-        int interval;
-        if (cell->GetInternalClock() < 1200) {interval = 4;}
-        else {interval = 2;}
+        int interval = 4;
+        // if (cell->GetInternalClock() > 1200) {interval = 2;}
         if (cell->GetInternalClock()%interval==0) {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);

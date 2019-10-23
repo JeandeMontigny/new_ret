@@ -23,7 +23,7 @@ inline int Simulate(int argc, const char** argv) {
   int maxStep = 2900;
   int cubeDim = 500;
   int num_cells = 80; // x4 to have c/mm2 density
-  double diffusion_coef = 0.65;
+  double diffusion_coef = 0.5;
   double decay_const = 0.1;
 
   double cellDensity = (double)num_cells * 1e6 / (cubeDim * cubeDim);
@@ -44,7 +44,7 @@ inline int Simulate(int argc, const char** argv) {
   auto* random = simulation.GetRandom();
 
   int mySeed = rand() % 10000;
-  // mySeed = 2089; // 9670
+  // mySeed = 1142; // 9670
   random->SetSeed(mySeed);
   cout << "modelling with seed " << mySeed << endl;
 
@@ -53,7 +53,7 @@ inline int Simulate(int argc, const char** argv) {
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   ModelInitializer::DefineSubstance(dg_0_, "on", diffusion_coef, decay_const,
-                                    param->max_bound_/2);
+                                    param->max_bound_/20);
 
   // Run simulation for one timestep
   for (int i = 0; i <= maxStep/240; i++) {
