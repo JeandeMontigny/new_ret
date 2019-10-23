@@ -6,7 +6,7 @@ calculate_gradients = true
 [visualization]
 export = true
 live = false
-export_interval = 2
+export_interval = 5
 
     [[visualize_sim_object]]
     name = "MyCell"
