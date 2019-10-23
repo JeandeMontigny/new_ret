@@ -20,7 +20,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int maxStep = 3000;
+  int maxStep = 2900;
   int cubeDim = 500;
   int num_cells = 80; // x4 to have c/mm2 density
   double diffusion_coef = 0.65;
@@ -44,7 +44,7 @@ inline int Simulate(int argc, const char** argv) {
   auto* random = simulation.GetRandom();
 
   int mySeed = rand() % 10000;
-  // mySeed = 2089; // 6296
+  // mySeed = 2089; // 9670
   random->SetSeed(mySeed);
   cout << "modelling with seed " << mySeed << endl;
 
