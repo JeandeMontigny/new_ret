@@ -39,14 +39,14 @@ namespace bdm {
         }
 
         bool withMovement = true;
-        double movementThreshold = 1.09; // 1.21
+        double movementThreshold = 1.0371; // 1.04 // 1.038
         bool withDeath = true;
-        double deathThreshold = 1.10; // 1.216
+        double deathThreshold = 1.0524; // 1.054
 
         if (cellClock < 700) {
           // // add small random movements
-          // cell->UpdatePosition(
-          //     {random->Uniform(-0.01, 0.01), random->Uniform(-0.01, 0.01), 0});
+          cell->UpdatePosition(
+              {random->Uniform(-0.001, 0.001), random->Uniform(-0.001, 0.001), 0});
           // cell growth
           if (cell->GetDiameter() < 14 && random->Uniform(0, 1) < 0.02) {
             cell->ChangeVolume(5500);
@@ -58,7 +58,7 @@ namespace bdm {
         /* -- cell movement -- */
         if (withMovement && cellClock >= 100 && cellClock < 1600
           && concentration >= movementThreshold
-          && cell->GetInternalClock()%2==0) {
+          && cell->GetInternalClock()%3==0) {
             // cell movement based on homotype substance gradient
             cell->UpdatePosition(diff_gradient);
             // update distance travelled by this cell
@@ -72,7 +72,7 @@ namespace bdm {
 
           /* -- cell death -- */
           if (withDeath && cellClock >= 100 && cellClock < 600
-            && cell->GetInternalClock()%2==0) {
+            && cell->GetInternalClock()%3==0) {
               // add vertical migration as the multi layer colapse in just on layer
               cell->UpdatePosition(gradient_z);
               // cell death depending on homotype substance concentration
@@ -109,7 +109,7 @@ namespace bdm {
           dg = rm->GetDiffusionGrid(dg_0_);
         }
 
-        if (cell->GetInternalClock()%4==0) {
+        if (cell->GetInternalClock()%3==0) {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);
           }
