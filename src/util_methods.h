@@ -95,11 +95,23 @@ namespace bdm {
       }
     });  // end for cell in simulation
 
-    cout << coordList.size() << " cells in mosaic" << endl;
-
     return computeRI(coordList);  // return RI for desired cell type
   }  // end getRI
 
+
+  inline double getDeathRate(int num_cells) {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    int cellInSimu = 0;
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+        cellInSimu++;
+      }
+    });  // end for cell in simulation
+
+    return (1 - ((double)cellInSimu / num_cells)) * 100;
+  } // end getDeathRate
 
 }
 
