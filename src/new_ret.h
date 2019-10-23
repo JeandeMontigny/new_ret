@@ -22,7 +22,8 @@ namespace bdm {
 inline int Simulate(int argc, const char** argv) {
   int maxStep = 2900;
   int cubeDim = 500;
-  int num_cells = 80; // x4 to have c/mm2 density
+  int cell_density = 550;
+  int num_cells = cell_density/4; // x4 to have c/mm2 density
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
 
@@ -53,9 +54,13 @@ inline int Simulate(int argc, const char** argv) {
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   ModelInitializer::DefineSubstance(dg_0_, "on", diffusion_coef, decay_const,
-                                    param->max_bound_/20);
+                                    param->max_bound_/4);
 
   // Run simulation for one timestep
+  // scheduler->Simulate(maxStep);
+  // cout << getDeathRate(num_cells) << "% of cell death"
+  //      << " ; RI = " << getRI(0) << endl;
+
   for (int i = 0; i <= maxStep/240; i++) {
     scheduler->Simulate(240);
     cout << "day " << i << "/" << (int)maxStep/240
