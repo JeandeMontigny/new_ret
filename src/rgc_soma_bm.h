@@ -39,26 +39,26 @@ namespace bdm {
         }
 
         bool withMovement = true;
-        double movementThreshold = 1.0371; // 1.04 // 1.038
+        double movementThreshold = 1.03708; // 03707 // 0371 - 03705
         bool withDeath = true;
-        double deathThreshold = 1.0524; // 1.054
+        double deathThreshold = 1.118; // 1.118 // 0532 // 0524 - 0523
 
-        if (cellClock < 700) {
+        if (cellClock < 1900 && cellClock%3==0 ) {
           // // add small random movements
           cell->UpdatePosition(
               {random->Uniform(-0.001, 0.001), random->Uniform(-0.001, 0.001), 0});
           // cell growth
           if (cell->GetDiameter() < 14 && random->Uniform(0, 1) < 0.02) {
-            cell->ChangeVolume(5500);
+            cell->ChangeVolume(2000);
           }
           // add vertical migration as the multi layer colapse in just on layer
           // cell->UpdatePosition(gradient_z);
         }
 
         /* -- cell movement -- */
-        if (withMovement && cellClock >= 100 && cellClock < 1600
+        if (withMovement && cellClock >= 100 && cellClock < 2800
           && concentration >= movementThreshold
-          && cell->GetInternalClock()%3==0) {
+          && cellClock%3==0) {
             // cell movement based on homotype substance gradient
             cell->UpdatePosition(diff_gradient);
             // update distance travelled by this cell
@@ -71,12 +71,13 @@ namespace bdm {
           }  // end tangential migration
 
           /* -- cell death -- */
-          if (withDeath && cellClock >= 100 && cellClock < 600
-            && cell->GetInternalClock()%3==0) {
+          if (withDeath && cellClock >= 100 && cellClock < 1200
+            && cellClock%3==0) {
               // add vertical migration as the multi layer colapse in just on layer
               cell->UpdatePosition(gradient_z);
               // cell death depending on homotype substance concentration
-              if (concentration > deathThreshold && random->Uniform(0, 1) < 0.015) {
+              if (concentration > deathThreshold
+                  && random->Uniform(0, 1) < 0.25) { // 0.25
                 cell->RemoveFromSimulation();
               }
             } // end cell death

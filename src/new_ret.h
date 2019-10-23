@@ -20,7 +20,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int maxStep = 1600;
+  int maxStep = 3000;
   int cubeDim = 500;
   int num_cells = 80; // x4 to have c/mm2 density
   double diffusion_coef = 0.65;
@@ -44,7 +44,7 @@ inline int Simulate(int argc, const char** argv) {
   auto* random = simulation.GetRandom();
 
   int mySeed = rand() % 10000;
-  // mySeed = 9784;
+  // mySeed = 2089; // 6296
   random->SetSeed(mySeed);
   cout << "modelling with seed " << mySeed << endl;
 
@@ -56,10 +56,10 @@ inline int Simulate(int argc, const char** argv) {
                                     param->max_bound_/2);
 
   // Run simulation for one timestep
-
-  for (int i = 0; i <= maxStep/100; i++) {
-    scheduler->Simulate(100);
-    cout << "step " << i*100 << " out of " << maxStep
+  for (int i = 0; i <= maxStep/240; i++) {
+    scheduler->Simulate(240);
+    cout << "day " << i << "/" << (int)maxStep/240
+         << " ; " << getDeathRate(num_cells) << "% of cell death"
          << " ; RI = " << getRI(0) << endl;
   }
 
