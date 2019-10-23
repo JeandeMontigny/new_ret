@@ -22,7 +22,7 @@ namespace bdm {
 inline int Simulate(int argc, const char** argv) {
   int maxStep = 2900;
   int cubeDim = 500;
-  int cell_density = 550;
+  int cell_density = 800;
   int num_cells = cell_density/4; // x4 to have c/mm2 density
   double diffusion_coef = 0.5;
   double decay_const = 0.1;

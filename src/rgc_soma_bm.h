@@ -39,9 +39,27 @@ namespace bdm {
         }
 
         bool withMovement = true;
-        double movementThreshold = 1.74; // 1.74 - 1.73
+        double movementThreshold = 1.735;
         bool withDeath = true;
-        double deathThreshold = 1.755; // 1.755
+        double deathThreshold = 1.7527;
+
+        // deathThreshold depending on initial density to obtain ~65% death rate
+        if (false) {
+          // 1000 (350 final)
+          deathThreshold = 1.7527; // RI ~5-8
+          // 800 (280 final)
+          deathThreshold = 1.7527; // RI ~5-8
+          // 600 (210 final)
+          deathThreshold = 1.7528; // RI ~5-8
+          // 400 (140 final)
+          deathThreshold = 1.7534; // RI ~4-5
+          // 200 (70 final)
+          deathThreshold = 1.7545; // RI ~2-3.5
+          // 100 (35 final)
+          deathThreshold = 1.7762; // RI ~1.8-3
+          // 60 (20 final)
+          deathThreshold = 1.7769; // RI ~1.8-2.5
+        }
 
         if (cellClock < 1900 && cellClock%3==0 ) {
           // // add small random movements
@@ -56,7 +74,6 @@ namespace bdm {
         }
 
         /* -- cell movement -- */
-        // if (cellClock > 1200) {movementThreshold=1.60;}
         if (withMovement && cellClock >= 100 && cellClock < 2800
           && concentration >= movementThreshold && cellClock%3==0) {
             // cell movement based on homotype substance gradient
@@ -109,9 +126,7 @@ namespace bdm {
         if (cell->GetCellType() == 0) {
           dg = rm->GetDiffusionGrid(dg_0_);
         }
-        int interval = 3;
-        // if (cell->GetInternalClock() > 1200) {interval = 2;}
-        if (cell->GetInternalClock()%interval==0) {
+        if (cell->GetInternalClock()%3==0) {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);
           }
