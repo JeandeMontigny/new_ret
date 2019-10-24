@@ -31,8 +31,10 @@ namespace bdm {
         if (cell->GetCellType() == 0) {
           dg = rm->GetDiffusionGrid(dg_0_);
           dg->GetGradient(position, &gradient);
-          gradient_z = gradient * 0.2;
-          gradient_z[0] = 0; gradient_z[1] = 0;
+          if (position[2]>27) {gradient_z={0, 0, -0.01};}
+          else {gradient_z={0, 0, 0.01};}
+          // gradient_z = gradient * 0.2;
+          // gradient_z[0] = 0; gradient_z[1] = 0;
           diff_gradient = gradient * -0.1;
           diff_gradient[2] = 0;
           concentration = dg->GetConcentration(position);
@@ -41,24 +43,31 @@ namespace bdm {
         bool withMovement = true;
         double movementThreshold = 1.735;
         bool withDeath = true;
-        double deathThreshold = 1.7527;
+        double deathThreshold = 1.78;
 
         // deathThreshold depending on initial density to obtain ~65% death rate
         if (false) {
-          // 1000 (350 final)
-          deathThreshold = 1.7527; // RI ~5-8
-          // 800 (280 final)
-          deathThreshold = 1.7527; // RI ~5-8
-          // 600 (210 final)
-          deathThreshold = 1.7528; // RI ~5-8
-          // 400 (140 final)
-          deathThreshold = 1.7534; // RI ~4-5
-          // 200 (70 final)
-          deathThreshold = 1.7545; // RI ~2-3.5
-          // 100 (35 final)
-          deathThreshold = 1.7762; // RI ~1.8-3
-          // 60 (20 final)
-          deathThreshold = 1.7769; // RI ~1.8-2.5
+          // 1000 (350 final) -- RI ~6-7
+          movementThreshold = 1.75;
+          deathThreshold = 1.82;
+          // 800 (280 final) -- RI ~5-7
+          movementThreshold = 1.735;
+          deathThreshold = 1.78;
+          // 600 (210 final) -- RI ~4-7
+          movementThreshold = 1.73;
+          deathThreshold = 1.8;
+          // 400 (140 final) -- RI ~4-5
+          movementThreshold = 1.72;
+          deathThreshold = 1.8;
+          // 200 (70 final) -- RI ~2.5-4
+          movementThreshold = 1.71;
+          deathThreshold = 1.81;
+          // 100 (35 final) -- RI ~1.8-3
+          movementThreshold = 1.65;
+          deathThreshold = 1.85;
+          // 60 (20 final) -- RI ~1.8-2.5
+          movementThreshold = 1.66;
+          deathThreshold = 1.86;
         }
 
         if (cellClock < 1900 && cellClock%3==0 ) {
