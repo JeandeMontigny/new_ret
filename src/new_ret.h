@@ -20,7 +20,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int maxStep = 2900;
+  int maxStep = 2000; // 12 days - 160 steps per day
   int cubeDim = 500;
   int cell_density = 800;
   int num_cells = cell_density/4; // x4 to have c/mm2 density
@@ -61,9 +61,9 @@ inline int Simulate(int argc, const char** argv) {
   // cout << getDeathRate(num_cells) << "% of cell death"
   //      << " ; RI = " << getRI(0) << endl;
 
-  for (int i = 0; i <= maxStep/240; i++) {
-    scheduler->Simulate(240);
-    cout << "day " << i << "/" << (int)maxStep/240
+  for (int i = 0; i <= maxStep/160; i++) {
+    scheduler->Simulate(160);
+    cout << "day " << i << "/" << (int)maxStep/160
          << " ; " << getDeathRate(num_cells) << "% of cell death"
          << " ; RI = " << getRI(0) << endl;
   }

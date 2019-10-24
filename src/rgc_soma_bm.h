@@ -70,20 +70,20 @@ namespace bdm {
           deathThreshold = 1.86;
         }
 
-        if (cellClock < 1900 && cellClock%3==0 ) {
+        if (cellClock < 960 && cellClock%3==0) {
           // // add small random movements
           cell->UpdatePosition(
               {random->Uniform(-0.01, 0.01), random->Uniform(-0.01, 0.01), 0});
           // cell growth
           if (cell->GetDiameter() < 14 && random->Uniform(0, 1) < 0.02) {
-            cell->ChangeVolume(2000);
+            cell->ChangeVolume(3000);
           }
           // add vertical migration as the multi layer colapse in just on layer
           // cell->UpdatePosition(gradient_z);
         }
 
         /* -- cell movement -- */
-        if (withMovement && cellClock >= 100 && cellClock < 2800
+        if (withMovement && cellClock >= 100 && cellClock < 1920
           && concentration >= movementThreshold && cellClock%3==0) {
             // cell movement based on homotype substance gradient
             cell->UpdatePosition(diff_gradient);
@@ -97,7 +97,7 @@ namespace bdm {
           }  // end tangential migration
 
           /* -- cell death -- */
-          if (withDeath && cellClock >= 100 && cellClock < 1200
+          if (withDeath && cellClock >= 100 && cellClock < 960
             && cellClock%4==0) {
               // add vertical migration as the multi layer colapse in just on layer
               cell->UpdatePosition(gradient_z);
