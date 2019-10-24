@@ -6,6 +6,7 @@
 
 namespace bdm {
 
+  // enumerate substances in simulation
   enum Substances { dg_0_ };
 
   // Define cell behavior for mosaic formation
@@ -27,49 +28,47 @@ namespace bdm {
         Double3 gradient, diff_gradient, gradient_z;
         DiffusionGrid* dg = nullptr;
 
-        // if cell is type 0, concentration and gradient are substance 0
+        // use corresponding diffusion grid
         if (cell->GetCellType() == 0) {
           dg = rm->GetDiffusionGrid(dg_0_);
           dg->GetGradient(position, &gradient);
+          concentration = dg->GetConcentration(position);
           if (position[2]>27) {gradient_z={0, 0, -0.01};}
           else {gradient_z={0, 0, 0.01};}
-          // gradient_z = gradient * 0.2;
-          // gradient_z[0] = 0; gradient_z[1] = 0;
-          diff_gradient = gradient * -0.1;
-          diff_gradient[2] = 0;
-          concentration = dg->GetConcentration(position);
+          diff_gradient = gradient * -0.1; diff_gradient[2] = 0;
         }
 
         bool withMovement = true;
         double movementThreshold = 1.735;
         bool withDeath = true;
-        double deathThreshold = 1.78;
+        double deathThreshold = 1.76;
 
-        // deathThreshold depending on initial density to obtain ~65% death rate
+        // thresholds depending on initial density to obtain ~65% death rate
         if (false) {
           // 1000 (350 final) -- RI ~6-7
-          movementThreshold = 1.75;
-          deathThreshold = 1.82;
+          movementThreshold = 1.745;
+          deathThreshold = 1.765;
           // 800 (280 final) -- RI ~5-7
           movementThreshold = 1.735;
-          deathThreshold = 1.78;
-          // 600 (210 final) -- RI ~4-7
+          deathThreshold = 1.76;
+          // 600 (210 final) -- RI ~5-7
           movementThreshold = 1.73;
-          deathThreshold = 1.8;
+          deathThreshold = 1.77;
           // 400 (140 final) -- RI ~4-5
           movementThreshold = 1.72;
-          deathThreshold = 1.8;
-          // 200 (70 final) -- RI ~2.5-4
+          deathThreshold = 1.775;
+          // 200 (70 final) -- RI ~2.5-3
           movementThreshold = 1.71;
-          deathThreshold = 1.81;
-          // 100 (35 final) -- RI ~1.8-3
-          movementThreshold = 1.65;
-          deathThreshold = 1.85;
+          deathThreshold = 1.78;
+          // 100 (35 final) -- RI ~2-3
+          movementThreshold = 1.7;
+          deathThreshold = 1.79;
           // 60 (20 final) -- RI ~1.8-2.5
-          movementThreshold = 1.66;
-          deathThreshold = 1.86;
+          movementThreshold = 1.7;
+          deathThreshold = 1.78;
         }
 
+        /* -- cell growth -- */
         if (cellClock < 960 && cellClock%3==0) {
           // // add small random movements
           cell->UpdatePosition(
@@ -78,9 +77,11 @@ namespace bdm {
           if (cell->GetDiameter() < 14 && random->Uniform(0, 1) < 0.02) {
             cell->ChangeVolume(3000);
           }
-          // add vertical migration as the multi layer colapse in just on layer
-          // cell->UpdatePosition(gradient_z);
-        }
+          // layer colapse if no cell death
+          if (!withDeath) {
+            cell->UpdatePosition(gradient_z);
+          }
+        } // end cell growth
 
         /* -- cell movement -- */
         if (withMovement && cellClock >= 100 && cellClock < 1920
@@ -115,7 +116,7 @@ namespace bdm {
               cell->SetInternalClock(cell->GetInternalClock() + 1);
             } // end update cell internal clock
 
-          }
+          } // end if MyCell
         } // end Run()
   }; // end biologyModule RGC_mosaic_BM
 
@@ -138,9 +139,9 @@ namespace bdm {
         if (cell->GetInternalClock()%3==0) {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);
-          }
         }
-      } // end Run()
+      } // end if MyCell
+    } // end Run()
   }; // end biologyModule Substance_secretion_BM
 
 

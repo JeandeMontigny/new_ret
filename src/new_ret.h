@@ -21,14 +21,11 @@ namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
   int maxStep = 2000; // 12 days - 160 steps per day
-  int cubeDim = 500;
+  int cubeDim = 1000;
   int cell_density = 800;
-  int num_cells = cell_density/4; // x4 to have c/mm2 density
+  int num_cells = cell_density*((double)cubeDim/1000)*((double)cubeDim/1000);
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
-
-  double cellDensity = (double)num_cells * 1e6 / (cubeDim * cubeDim);
-  cout << "cell density: " << cellDensity << " cells per mm^2" << endl;
 
   auto set_param = [&](Param* param) {
     // Create an artificial bounds for the simulation space
@@ -47,29 +44,27 @@ inline int Simulate(int argc, const char** argv) {
   int mySeed = rand() % 10000;
   // mySeed = 1142; // 9670
   random->SetSeed(mySeed);
-  cout << "modelling with seed " << mySeed << endl;
+  cout << "Start simulation with " << cell_density
+       << " cells/mm^2 using seed " << mySeed << endl;
 
   // create cells
-  CellCreator(0, 500, num_cells, 0);
+  CellCreator(param->min_bound_, param->max_bound_, num_cells, 0);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   ModelInitializer::DefineSubstance(dg_0_, "on", diffusion_coef, decay_const,
                                     param->max_bound_/4);
 
-  // Run simulation for one timestep
-  // scheduler->Simulate(maxStep);
-  // cout << getDeathRate(num_cells) << "% of cell death"
-  //      << " ; RI = " << getRI(0) << endl;
+  cout << "Cells created and substances initialised" << endl;
 
+  // Run simulation
   for (int i = 0; i <= maxStep/160; i++) {
     scheduler->Simulate(160);
-    cout << "day " << i << "/" << (int)maxStep/160
-         << " ; " << getDeathRate(num_cells) << "% of cell death"
-         << " ; RI = " << getRI(0) << endl;
+    cout << setprecision(3) << "day " << i << "/" << (int)maxStep/160 << ": "
+         << getDeathRate(num_cells) << "% of cell death\tRI = " << getRI(0) << endl;
   }
 
   return 0;
-}
+} // end Simulate
 
 }  // namespace bdm
 
