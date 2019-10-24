@@ -94,10 +94,31 @@ namespace bdm {
         }
       }
     });  // end for cell in simulation
-
+    cout << coordList.size() << " cells of type " << desiredCellType << endl;
     return computeRI(coordList);  // return RI for desired cell type
   }  // end getRI
 
+
+  inline vector<array<double, 2>> getAllRI() {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    vector<double> typesList;
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+        auto thisCellType = cell->GetCellType();
+        // if type is not -1 and not in list
+        if (find(typesList.begin(), typesList.end(), thisCellType) == typesList.end()) {
+          typesList.push_back(thisCellType); // put cell coord in the list
+        }
+      }
+    });  // end for cell in simulation
+    vector<array<double, 2>> listRi;
+    for (unsigned int i = 0; i < typesList.size(); i++) {
+      listRi.push_back({getRI(typesList[i]), typesList[i]});
+    }
+    return listRi;
+  }
 
   inline double getDeathRate(int num_cells) {
     auto* sim = Simulation::GetActive();

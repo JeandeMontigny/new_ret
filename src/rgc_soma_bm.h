@@ -7,7 +7,9 @@
 namespace bdm {
 
   // enumerate substances in simulation
-  enum Substances { dg_0_ };
+  // enum Substances { dg_200_, dg_201_, dg_202_, dg_203_, dg_204_, dg_205_,
+  //                   dg_206_, dg_207_, dg_208_, dg_209_, dg_210_, dg_211_ };
+  enum Substances { dg_200_, dg_201_, dg_202_, dg_203_};
 
   // Define cell behavior for mosaic formation
   struct RGC_mosaic_BM : public BaseBiologyModule {
@@ -23,53 +25,149 @@ namespace bdm {
         auto* random = sim->GetRandom();
 
         auto& position = cell->GetPosition();
-        int cellClock = cell->GetInternalClock();
+        int cell_clock = cell->GetInternalClock();
+        int cell_type = cell->GetCellType();
         double concentration = 0;
         Double3 gradient, diff_gradient, gradient_z;
         DiffusionGrid* dg = nullptr;
 
+
+        /* -- cell fate -- */
+        if (cell_type == -1 && cell_clock%3==0) {
+
+          struct conc_type {
+            double concentration;
+            int type;
+            string name;
+            double probability;
+            conc_type(double c, int t, string n, double p) {
+              concentration = c;
+              type = t;
+              name = n;
+              probability = p;
+            }
+          };
+          //NOTE: density to obtain: 40, 40, 65, 200
+          array<string, 4> substances_list = { "off_aplhaa", "off_aplhab", "off_m1", "off_j" };
+          array<int, 4> cells_types = { 200, 201, 202, 203 };
+          array<double, 4> proba = { 0.115, 0.115, 0.188, 0.579 };
+          vector<conc_type> conc_type_list;
+          for (size_t i=0; i < substances_list.size(); i++) {
+            dg = rm->GetDiffusionGrid(substances_list[i]);
+            double concentration = dg->GetConcentration(position);
+              conc_type_list.push_back(conc_type(concentration, cells_types[i], substances_list[i], proba[i]) );
+          }
+
+          size_t nbOfZero = 0;
+          for (size_t i = 0; i < conc_type_list.size(); i++) {
+            if (conc_type_list[i].concentration==0) {
+              nbOfZero++;
+            }
+          }
+
+          if (nbOfZero == conc_type_list.size()) {
+            if (random->Uniform(0, 1) < 0.001) {
+              // TODO: non linear type attribution
+              int selected_type = conc_type_list[random->Uniform(0, conc_type_list.size())].type;
+              cell->SetCellType(selected_type);
+            }
+            return;
+          }
+
+          if (random->Uniform(0, 1) < 0.05) { return; }
+
+          // TODO: non linear type attribution
+          // lowest concentration?
+          // if just lowest -> homogeneous distribution of types
+          // divide concentration by wanted density? (lower concentration of denser type)
+
+
+          //TODO: special case
+          // if (conc_type_list.size() == 0 ) { return; }
+
+          // int selected_type = conc_type_list[random->Uniform(0, conc_type_list.size())].type;
+          // cell->SetCellType(selected_type);
+
+
+
+
+          //TODO: count concentration of 0
+          // if at least a 0 :
+          //  select from 0 concentration (depending on conc_type_list[i].probability)
+          // else :
+          //  remove high concentration ( > concentration_threshold)
+          //      NOTE: increase high proba cells concentration_threshold?
+
+          // double concentration_threshold = 0.1;
+          // // remove concentration from list if it is higher than threshold
+          // for (size_t i = 0; i < conc_type_list.size(); i++) {
+          //   if (conc_type_list[i].concentration > concentration_threshold) {
+          //   if (conc_type_list[i].concentration > concentration_threshold * conc_type_list[i].probability) {
+          //     conc_type_list.erase(conc_type_list.begin()+i);
+          //   }
+          // }
+
+
+          //  select from the remaining concentrations (depending on conc_type_list[i].probability)
+
+          // cell->SetCellType(selected_type);
+
+          return;
+        } // end cell fate
+
+
         // use corresponding diffusion grid
-        if (cell->GetCellType() == 0) {
-          dg = rm->GetDiffusionGrid(dg_0_);
-          dg->GetGradient(position, &gradient);
-          concentration = dg->GetConcentration(position);
-          if (position[2]>27) {gradient_z={0, 0, -0.01};}
-          else {gradient_z={0, 0, 0.01};}
-          diff_gradient = gradient * -0.1; diff_gradient[2] = 0;
+        if (cell_type == 200) {
+          dg = rm->GetDiffusionGrid("off_aplhaa");
+        }
+        else if (cell_type == 201) {
+          dg = rm->GetDiffusionGrid("off_aplhab");
+        }
+        else if (cell_type == 202) {
+          dg = rm->GetDiffusionGrid("off_m1");
+        }
+        else if (cell_type == 203) {
+          dg = rm->GetDiffusionGrid("off_j");
         }
 
-        bool withMovement = true;
-        double movementThreshold = 1.735;
-        bool withDeath = true;
-        double deathThreshold = 1.76;
+        dg->GetGradient(position, &gradient);
+        concentration = dg->GetConcentration(position);
+        if (position[2]>27) {gradient_z={0, 0, -0.01};}
+        else {gradient_z={0, 0, 0.01};}
+        diff_gradient = gradient * -0.1; diff_gradient[2] = 0;
+
+        bool with_movement = true;
+        double movement_threshold = 1.735;
+        bool with_death = true;
+        double death_threshold = 1.76;
 
         // thresholds depending on initial density to obtain ~65% death rate
         if (false) {
           // 1000 (350 final) -- RI ~6-7
-          movementThreshold = 1.745;
-          deathThreshold = 1.765;
+          movement_threshold = 1.745;
+          death_threshold = 1.765;
           // 800 (280 final) -- RI ~5-7
-          movementThreshold = 1.735;
-          deathThreshold = 1.76;
+          movement_threshold = 1.735;
+          death_threshold = 1.76;
           // 600 (210 final) -- RI ~5-7
-          movementThreshold = 1.73;
-          deathThreshold = 1.77;
+          movement_threshold = 1.73;
+          death_threshold = 1.77;
           // 400 (140 final) -- RI ~4-5
-          movementThreshold = 1.72;
-          deathThreshold = 1.775;
+          movement_threshold = 1.72;
+          death_threshold = 1.775;
           // 200 (70 final) -- RI ~2.5-3
-          movementThreshold = 1.71;
-          deathThreshold = 1.78;
+          movement_threshold = 1.71;
+          death_threshold = 1.78;
           // 100 (35 final) -- RI ~2-3
-          movementThreshold = 1.7;
-          deathThreshold = 1.79;
+          movement_threshold = 1.7;
+          death_threshold = 1.79;
           // 60 (20 final) -- RI ~1.8-2.5
-          movementThreshold = 1.7;
-          deathThreshold = 1.78;
+          movement_threshold = 1.7;
+          death_threshold = 1.78;
         }
 
         /* -- cell growth -- */
-        if (cellClock < 960 && cellClock%3==0) {
+        if (cell_clock < 960 && cell_clock%3==0) {
           // // add small random movements
           cell->UpdatePosition(
               {random->Uniform(-0.01, 0.01), random->Uniform(-0.01, 0.01), 0});
@@ -78,32 +176,32 @@ namespace bdm {
             cell->ChangeVolume(3000);
           }
           // layer colapse if no cell death
-          if (!withDeath) {
+          if (!with_death) {
             cell->UpdatePosition(gradient_z);
           }
         } // end cell growth
 
         /* -- cell movement -- */
-        if (withMovement && cellClock >= 100 && cellClock < 1920
-          && concentration >= movementThreshold && cellClock%3==0) {
+        if (with_movement && cell_clock >= 100 && cell_clock < 1920
+          && concentration >= movement_threshold && cell_clock%3==0) {
             // cell movement based on homotype substance gradient
             cell->UpdatePosition(diff_gradient);
             // update distance travelled by this cell
-            auto previousPosition = cell->GetPreviousPosition();
-            auto currentPosition = cell->GetPosition();
+            auto previous_position = cell->GetPreviousPosition();
+            auto current_position = cell->GetPosition();
             cell->SetDistanceTravelled(cell->GetDistanceTravelled() +
-            (sqrt(pow(currentPosition[0] - previousPosition[0], 2) +
-            pow(currentPosition[1] - previousPosition[1], 2))));
+            (sqrt(pow(current_position[0] - previous_position[0], 2) +
+            pow(current_position[1] - previous_position[1], 2))));
             cell->SetPreviousPosition(cell->GetPosition());
           }  // end tangential migration
 
           /* -- cell death -- */
-          if (withDeath && cellClock >= 100 && cellClock < 960
-            && cellClock%4==0) {
+          if (with_death && cell_clock >= 100 && cell_clock < 960
+            && cell_clock%4==0) {
               // add vertical migration as the multi layer colapse in just on layer
               cell->UpdatePosition(gradient_z);
               // cell death depending on homotype substance concentration
-              if (concentration > deathThreshold
+              if (concentration > death_threshold
                   && random->Uniform(0, 1) < 0.1) { // 0.25
                 cell->RemoveFromSimulation();
               }
@@ -132,10 +230,23 @@ namespace bdm {
       if (auto* cell = dynamic_cast<MyCell*>(so)) {
         auto* rm = Simulation::GetActive()->GetResourceManager();
 
+        if (cell->GetCellType() == -1) { return; }
+        int cell_type = cell->GetCellType();
         DiffusionGrid* dg = nullptr;
-        if (cell->GetCellType() == 0) {
-          dg = rm->GetDiffusionGrid(dg_0_);
+        // use corresponding diffusion grid
+        if (cell_type == 200) {
+          dg = rm->GetDiffusionGrid("off_aplhaa");
         }
+        if (cell_type == 201) {
+          dg = rm->GetDiffusionGrid("off_aplhab");
+        }
+        if (cell_type == 202) {
+          dg = rm->GetDiffusionGrid("off_m1");
+        }
+        if (cell_type == 203) {
+          dg = rm->GetDiffusionGrid("off_j");
+        }
+
         if (cell->GetInternalClock()%3==0) {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);
