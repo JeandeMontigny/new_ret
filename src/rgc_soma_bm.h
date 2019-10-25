@@ -3,6 +3,7 @@
 
 #include "biodynamo.h"
 #include "extended_objects.h"
+#include "util_methods.h"
 
 namespace bdm {
 
@@ -33,89 +34,73 @@ namespace bdm {
 
 
         /* -- cell fate -- */
-        if (cell_type == -1 && cell_clock%3==0) {
+        if (cell_type == -1 && cell_clock%4==0) {
+          if (random->Uniform(0, 1) < 0.95) { return; }
 
           struct conc_type {
             double concentration;
             int type;
-            string name;
             double probability;
-            conc_type(double c, int t, string n, double p) {
+            conc_type(double c, int t, double p) {
               concentration = c;
               type = t;
-              name = n;
               probability = p;
             }
           };
-          //NOTE: density to obtain: 40, 40, 65, 200
+
+          //NOTE: density to obtain: 114, 114, 185, 571
           array<string, 4> substances_list = { "off_aplhaa", "off_aplhab", "off_m1", "off_j" };
           array<int, 4> cells_types = { 200, 201, 202, 203 };
-          array<double, 4> proba = { 0.115, 0.115, 0.188, 0.579 };
+          array<double, 4> proba = { 0.115, 0.115, 0.188, 0.58 };
           vector<conc_type> conc_type_list;
           for (size_t i=0; i < substances_list.size(); i++) {
             dg = rm->GetDiffusionGrid(substances_list[i]);
             double concentration = dg->GetConcentration(position);
-              conc_type_list.push_back(conc_type(concentration, cells_types[i], substances_list[i], proba[i]) );
+            conc_type_list.push_back(conc_type(concentration, cells_types[i], proba[i]) );
           }
 
-          size_t nbOfZero = 0;
-          for (size_t i = 0; i < conc_type_list.size(); i++) {
-            if (conc_type_list[i].concentration==0) {
-              nbOfZero++;
-            }
-          }
+          double concentration_threshold = 1e-3;
 
-          if (nbOfZero == conc_type_list.size()) {
-            if (random->Uniform(0, 1) < 0.001) {
-              // TODO: non linear type attribution
-              int selected_type = conc_type_list[random->Uniform(0, conc_type_list.size())].type;
-              cell->SetCellType(selected_type);
+          vector<conc_type> conc_type_list_potential;
+          size_t nb_zero; double sum_proba;
+          do {
+            nb_zero = 0; sum_proba = 0;
+            conc_type_list_potential.clear();
+            for (size_t i = 0; i < conc_type_list.size(); i++) {
+              if (conc_type_list[i].concentration < concentration_threshold * pow(conc_type_list[i].probability, 3)) {
+              // if (conc_type_list[i].concentration < concentration_threshold) {
+                conc_type_list_potential.push_back(conc_type_list[i]);
+                sum_proba += conc_type_list[i].probability;
+                if (conc_type_list[i].concentration == 0) {
+                  nb_zero++;
+                }
+              }
             }
+            concentration_threshold *= 10;
+          } while (conc_type_list_potential.size() == 0);
+
+          // if no substances around
+          if (nb_zero == conc_type_list.size() && random->Uniform(0, 1) < 0.9) {
             return;
           }
 
-          if (random->Uniform(0, 1) < 0.05) { return; }
+          vector<double> cumulative_proba; double previous_proba = 0;
+          for (size_t i = 0; i < conc_type_list_potential.size(); i++) {
+            cumulative_proba.push_back(conc_type_list_potential[i].probability+previous_proba);
+            previous_proba = cumulative_proba[i];
+          }
 
-          // TODO: non linear type attribution
-          // lowest concentration?
-          // if just lowest -> homogeneous distribution of types
-          // divide concentration by wanted density? (lower concentration of denser type)
+          double random_double = random->Uniform(0, sum_proba);
+          size_t j = 0;
+          while (random_double > cumulative_proba[j]) {
+            j++;
+          }
 
-
-          //TODO: special case
-          // if (conc_type_list.size() == 0 ) { return; }
-
-          // int selected_type = conc_type_list[random->Uniform(0, conc_type_list.size())].type;
-          // cell->SetCellType(selected_type);
-
-
-
-
-          //TODO: count concentration of 0
-          // if at least a 0 :
-          //  select from 0 concentration (depending on conc_type_list[i].probability)
-          // else :
-          //  remove high concentration ( > concentration_threshold)
-          //      NOTE: increase high proba cells concentration_threshold?
-
-          // double concentration_threshold = 0.1;
-          // // remove concentration from list if it is higher than threshold
-          // for (size_t i = 0; i < conc_type_list.size(); i++) {
-          //   if (conc_type_list[i].concentration > concentration_threshold) {
-          //   if (conc_type_list[i].concentration > concentration_threshold * conc_type_list[i].probability) {
-          //     conc_type_list.erase(conc_type_list.begin()+i);
-          //   }
-          // }
-
-
-          //  select from the remaining concentrations (depending on conc_type_list[i].probability)
-
-          // cell->SetCellType(selected_type);
-
+          cell->SetCellType(conc_type_list_potential[j].type);
           return;
         } // end cell fate
 
-
+        /* -- initialisation -- */
         // use corresponding diffusion grid
         if (cell_type == 200) {
           dg = rm->GetDiffusionGrid("off_aplhaa");
@@ -167,7 +152,7 @@ namespace bdm {
         }
 
         /* -- cell growth -- */
-        if (cell_clock < 960 && cell_clock%3==0) {
+        if (cell_clock >= 100 && cell_clock < 1060 && cell_clock%3==0) {
           // // add small random movements
           cell->UpdatePosition(
               {random->Uniform(-0.01, 0.01), random->Uniform(-0.01, 0.01), 0});
@@ -182,7 +167,7 @@ namespace bdm {
         } // end cell growth
 
         /* -- cell movement -- */
-        if (with_movement && cell_clock >= 100 && cell_clock < 1920
+        if (with_movement && cell_clock >= 200 && cell_clock < 2020
           && concentration >= movement_threshold && cell_clock%3==0) {
             // cell movement based on homotype substance gradient
             cell->UpdatePosition(diff_gradient);
@@ -196,7 +181,7 @@ namespace bdm {
           }  // end tangential migration
 
           /* -- cell death -- */
-          if (with_death && cell_clock >= 100 && cell_clock < 960
+          if (with_death && cell_clock >= 200 && cell_clock < 1060
             && cell_clock%4==0) {
               // add vertical migration as the multi layer colapse in just on layer
               cell->UpdatePosition(gradient_z);

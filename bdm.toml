@@ -4,7 +4,7 @@ leaking_edges = true
 calculate_gradients = true
 
 [visualization]
-export = true
+export = false
 live = false
 export_interval = 5
 
