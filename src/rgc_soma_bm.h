@@ -32,6 +32,34 @@ namespace bdm {
         Double3 gradient, diff_gradient, gradient_z;
         DiffusionGrid* dg = nullptr;
 
+        bool with_movement = true;
+        double movement_threshold = 1.735;
+        bool with_death = true;
+        double death_threshold = 1.76;
+
+        if (false) {
+          // 1000 (350 final) -- RI ~6-7
+          movement_threshold = 1.745;
+          death_threshold = 1.765;
+          // 800 (280 final) -- RI ~5-7
+          movement_threshold = 1.735;
+          death_threshold = 1.76;
+          // 600 (210 final) -- RI ~5-7
+          movement_threshold = 1.73;
+          death_threshold = 1.77;
+          // 400 (140 final) -- RI ~4-5
+          movement_threshold = 1.72;
+          death_threshold = 1.775;
+          // 200 (70 final) -- RI ~2.5-3
+          movement_threshold = 1.71;
+          death_threshold = 1.78;
+          // 100 (35 final) -- RI ~2-3
+          movement_threshold = 1.7;
+          death_threshold = 1.79;
+          // 60 (20 final) -- RI ~1.8-2.5
+          movement_threshold = 1.7;
+          death_threshold = 1.78;
+        }
 
         /* -- cell fate -- */
         if (cell_type == -1 && cell_clock%4==0) {
@@ -48,7 +76,7 @@ namespace bdm {
             }
           };
 
-          //NOTE: density to obtain: 114, 114, 185, 571
+          // density to obtain: 114, 114, 185, 571
           array<string, 4> substances_list = { "off_aplhaa", "off_aplhab", "off_m1", "off_j" };
           array<int, 4> cells_types = { 200, 201, 202, 203 };
           array<double, 4> proba = { 0.115, 0.115, 0.188, 0.58 };
@@ -60,7 +88,6 @@ namespace bdm {
           }
 
           double concentration_threshold = 1e-3;
-
           vector<conc_type> conc_type_list_potential;
           size_t nb_zero; double sum_proba;
           do {
@@ -102,17 +129,26 @@ namespace bdm {
 
         /* -- initialisation -- */
         // use corresponding diffusion grid
+        // set thresholds depending on initial density to obtain ~65% death rate
         if (cell_type == 200) {
           dg = rm->GetDiffusionGrid("off_aplhaa");
+          movement_threshold = 1.7;
+          death_threshold = 1.79;
         }
         else if (cell_type == 201) {
           dg = rm->GetDiffusionGrid("off_aplhab");
+          movement_threshold = 1.7;
+          death_threshold = 1.79;
         }
         else if (cell_type == 202) {
           dg = rm->GetDiffusionGrid("off_m1");
+          movement_threshold = 1.71;
+          death_threshold = 1.78;
         }
         else if (cell_type == 203) {
           dg = rm->GetDiffusionGrid("off_j");
+          movement_threshold = 1.727;
+          death_threshold = 1.772;
         }
 
         dg->GetGradient(position, &gradient);
@@ -120,36 +156,6 @@ namespace bdm {
         if (position[2]>27) {gradient_z={0, 0, -0.01};}
         else {gradient_z={0, 0, 0.01};}
         diff_gradient = gradient * -0.1; diff_gradient[2] = 0;
-
-        bool with_movement = true;
-        double movement_threshold = 1.735;
-        bool with_death = true;
-        double death_threshold = 1.76;
-
-        // thresholds depending on initial density to obtain ~65% death rate
-        if (false) {
-          // 1000 (350 final) -- RI ~6-7
-          movement_threshold = 1.745;
-          death_threshold = 1.765;
-          // 800 (280 final) -- RI ~5-7
-          movement_threshold = 1.735;
-          death_threshold = 1.76;
-          // 600 (210 final) -- RI ~5-7
-          movement_threshold = 1.73;
-          death_threshold = 1.77;
-          // 400 (140 final) -- RI ~4-5
-          movement_threshold = 1.72;
-          death_threshold = 1.775;
-          // 200 (70 final) -- RI ~2.5-3
-          movement_threshold = 1.71;
-          death_threshold = 1.78;
-          // 100 (35 final) -- RI ~2-3
-          movement_threshold = 1.7;
-          death_threshold = 1.79;
-          // 60 (20 final) -- RI ~1.8-2.5
-          movement_threshold = 1.7;
-          death_threshold = 1.78;
-        }
 
         /* -- cell growth -- */
         if (cell_clock >= 100 && cell_clock < 1060 && cell_clock%3==0) {

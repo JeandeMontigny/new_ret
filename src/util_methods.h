@@ -120,6 +120,7 @@ namespace bdm {
     return listRi;
   }
 
+
   inline double getDeathRate(int num_cells) {
     auto* sim = Simulation::GetActive();
     auto* rm = sim->GetResourceManager();

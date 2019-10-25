@@ -20,7 +20,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 160; // 2000 = 12 days - 160 steps per day
+  int max_step = 2080; // 2000 = 12 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 986;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -67,22 +67,14 @@ inline int Simulate(int argc, const char** argv) {
   cout << "Cells created and substances initialised" << endl;
 
   // Run simulation
-  // for (int i = 0; i <= max_step/160; i++) {
-  //   scheduler->Simulate(160);
-  //   cout << setprecision(3) << "day " << i << "/" << (int)max_step/160 << ": "
-  //        << getDeathRate(num_cells) << "% of cell death" << endl;
-  //  vector<array<double, 2>> all_ri = getAllRI();
-  //  for (unsigned int i = 0; i < all_ri.size(); i++) {
-  //    cout << "RI = " << all_ri[i][0] << " for cell type " << all_ri[i][1] << endl;
-  //  }
-  // }
-  for (int i = 0; i <= max_step/50; i++) {
-    scheduler->Simulate(50);
-    cout << setprecision(3) << "step " << i*50 << "/" << (int)max_step<< endl;
-     vector<array<double, 2>> all_ri = getAllRI();
-     for (unsigned int i = 0; i < all_ri.size(); i++) {
-       cout << "RI = " << all_ri[i][0] << " for cell type " << all_ri[i][1] << endl;
-     }
+  for (int i = 0; i <= max_step/160; i++) {
+    scheduler->Simulate(160);
+    cout << setprecision(3) << "day " << i << "/" << (int)max_step/160 << ": "
+         << getDeathRate(num_cells) << "% of cell death" << endl;
+   vector<array<double, 2>> all_ri = getAllRI();
+   for (unsigned int i = 0; i < all_ri.size(); i++) {
+     cout << "RI = " << all_ri[i][0] << " for cell type " << all_ri[i][1] << endl;
+   }
   }
 
   return 0;
