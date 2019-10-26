@@ -4,7 +4,6 @@
 #include "biodynamo.h"
 #include "extended_objects.h"
 #include "rgc_dendrite_bm.h"
-#include "util_methods.h"
 
 namespace bdm {
 
@@ -311,16 +310,29 @@ namespace bdm {
           else if (cell_type == 203) {
             dendrite_nb = 3 + (int)random->Uniform(1, 3);
           }
+          else {
+            dendrite_nb = 2;
+          }
 
           for (int i = 0; i <= dendrite_nb; i++) {
-
-            // root location
+            // root location - TODO: no overlap
             Double3 dendrite_root = {0,0,1};
             // create dendrites
+
+            //WARNING: create NeuriteElement not MyNeurite
+            // auto&& ne = cell->ExtendNewNeurite(dendrite_root);
+
+            //WARNING: crash at my_neurite declaration with:
+            // terminate called after throwing an instance of 'std::out_of_range'
+            // what():  _Map_base::at
             MyNeurite my_neurite;
+            // auto* my_neurite = new MyNeurite();
+
             auto* ne = bdm_static_cast<MyNeurite*>(
               cell->ExtendNewNeurite(dendrite_root, &my_neurite));
-            ne->AddBiologyModule(RGC_dendrite_BM());
+            // auto* ne = dynamic_cast<MyNeurite*>(my_neurite);
+            cout << "neurite initialised, about to initialse data member" << endl;
+            ne->AddBiologyModule(new RGC_dendrite_BM());
             ne->SetHasToRetract(false);
             ne->SetBeyondThreshold(false);
             ne->SetSubtype(cell_type);

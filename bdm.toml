@@ -12,9 +12,9 @@ export_interval = 5
     name = "MyCell"
     additional_data_members = [ "cell_type_" ]
 
-    # [[visualize_sim_object]]
-    # name = "MyNeurite"
-    # additional_data_members = [ "subtype_" ]
+    [[visualize_sim_object]]
+    name = "MyNeurite"
+    additional_data_members = [ "subtype_" ]
 
     # [[visualize_diffusion]]
     # name = "on_diffusion"

@@ -15,6 +15,7 @@
 #define NEW_RET_H_
 
 #include "biodynamo.h"
+#include "extended_objects.h"
 #include "util_methods.h"
 
 namespace bdm {
@@ -51,10 +52,10 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
-  ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const, param->max_bound_/4);

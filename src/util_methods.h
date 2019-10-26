@@ -3,6 +3,7 @@
 
 #include "extended_objects.h"
 #include "rgc_soma_bm.h"
+#include "rgc_dendrite_bm.h"
 
 namespace bdm {
   using namespace std;
@@ -23,8 +24,8 @@ namespace bdm {
       cell->SetDiameter(random->Uniform(7, 8));
       cell->SetCellType(cellType);
       cell->SetPreviousPosition({x, y, z});
-      cell->AddBiologyModule(new Substance_secretion_BM());
-      cell->AddBiologyModule(new RGC_mosaic_BM());
+      // cell->AddBiologyModule(new Substance_secretion_BM());
+      // cell->AddBiologyModule(new RGC_mosaic_BM());
       cell->AddBiologyModule(new Internal_clock_BM());
       cell->AddBiologyModule(new Dendrite_creation_BM());
       rm->push_back(cell);

@@ -19,6 +19,8 @@ public:
       auto* sim = Simulation::GetActive();
       auto* random = sim->GetRandom();
 
+      ne->GetMySoma()->GetLabel();
+
     } // end if MyNeurite
   } // end Run()
 }; // end biologyModule RGC_dendrite_BM

@@ -47,7 +47,7 @@ namespace bdm {
   }; // end MyCell definition
 
 
-  // Define custom cell MyCell extending NeuronSoma
+  // Define custom neurite MyNeurite extending NeuriteElement
   class MyNeurite : public experimental::neuroscience::NeuriteElement {
     BDM_SIM_OBJECT_HEADER(MyNeurite, experimental::neuroscience::NeuriteElement, 1,
                           has_to_retract_, beyond_threshold_,
@@ -59,8 +59,8 @@ namespace bdm {
     virtual ~MyNeurite() {}
 
     // Default event constructor
-    MyNeurite(const Event& event, SimObject* other, uint64_t new_oid = 0) :
-     Base(event, other, new_oid) {
+    MyNeurite(const Event& event, SimObject* other, uint64_t new_oid = 0)
+        : Base(event, other, new_oid) {
       if (event.GetId() ==
       experimental::neuroscience::NewNeuriteExtensionEvent::kEventId) {
         its_soma_ = static_cast<MyCell*>(other)->GetSoPtr<MyCell>();
@@ -96,9 +96,9 @@ namespace bdm {
      double diam_before_retract_;
      int subtype_;
      SoPointer<MyCell> its_soma_;
-
   }; // end MyNeurite definition
 
-}
+
+} // namespace bdm
 
 #endif
