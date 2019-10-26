@@ -3,6 +3,7 @@
 
 #include "biodynamo.h"
 #include "extended_objects.h"
+#include "rgc_dendrite_bm.h"
 #include "util_methods.h"
 
 namespace bdm {
@@ -62,8 +63,8 @@ namespace bdm {
         }
 
         /* -- cell fate -- */
-        if (cell_type == -1 && cell_clock%4==0) {
-          if (random->Uniform(0, 1) < 0.95) { return; }
+        if (cell_type == -1) {
+          if (cell_clock%2!=0 || random->Uniform(0, 1) < 0.94) { return; }
 
           struct conc_type {
             double concentration;
@@ -198,12 +199,10 @@ namespace bdm {
               }
             } // end cell death
 
-            /* -- internal clock -- */
-            // probability to increase internal clock
-            if (random->Uniform(0, 1) < 0.96) {
-              // update cell internal clock
-              cell->SetInternalClock(cell->GetInternalClock() + 1);
-            } // end update cell internal clock
+            // remove RGC_mosaic_BM when mosaics are over
+            if (cell->GetInternalClock() > 2020) {
+              cell->RemoveBiologyModule(this);
+            }
 
           } // end if MyCell
         } // end Run()
@@ -242,12 +241,99 @@ namespace bdm {
           auto& secretion_position = cell->GetPosition();
           dg->IncreaseConcentrationBy(secretion_position, 1);
         }
+
+        // remove Substance_secretion_BM when mosaics are over
+        if (cell->GetInternalClock() > 2020) {
+          cell->RemoveBiologyModule(this);
+        }
+
       } // end if MyCell
     } // end Run()
   }; // end biologyModule Substance_secretion_BM
 
 
-// cell->RemoveBiologyModule(this);
+  // Define cell behavior for dendrites creation
+  struct Internal_clock_BM : public BaseBiologyModule {
+    BDM_STATELESS_BM_HEADER(Internal_clock_BM, BaseBiologyModule, 1);
+
+  public:
+    Internal_clock_BM() : BaseBiologyModule(gAllEventIds) {}
+
+    void Run(SimObject* so) override {
+      if (auto* cell = dynamic_cast<MyCell*>(so)) {
+        auto* random = Simulation::GetActive()->GetRandom();
+
+        // probability to increase internal clock
+        if (random->Uniform(0, 1) < 0.96) {
+          // update cell internal clock
+          cell->SetInternalClock(cell->GetInternalClock() + 1);
+        }
+
+        if (cell->GetInternalClock() > 2021) {
+          // remove Internal_clock_BM when not needed anymore
+          cell->RemoveBiologyModule(this);
+        }
+
+      } // end if MyCell
+    } // end Run()
+  }; // end biologyModule Internal_clock_BM
+
+
+  // Define cell behavior for dendrites creation
+  struct Dendrite_creation_BM : public BaseBiologyModule {
+    BDM_STATELESS_BM_HEADER(Dendrite_creation_BM, BaseBiologyModule, 1);
+
+  public:
+    Dendrite_creation_BM() : BaseBiologyModule(gAllEventIds) {}
+
+    void Run(SimObject* so) override {
+      if (auto* cell = dynamic_cast<MyCell*>(so)) {
+
+        bool createDendrites = true;
+
+        if (createDendrites && cell->GetInternalClock() > 2021) {
+          auto* random = Simulation::GetActive()->GetRandom();
+
+          int cell_type = cell->GetCellType();
+
+          int dendrite_nb = 0;
+          // dendrites number depending on cell type
+          //NOTE: average dendrites number = 4.5; std = 1.2
+          if (cell_type == 200) {
+            dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          }
+          else if (cell_type == 201) {
+            dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          }
+          else if (cell_type == 202) {
+            dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          }
+          else if (cell_type == 203) {
+            dendrite_nb = 3 + (int)random->Uniform(1, 3);
+          }
+
+          for (int i = 0; i <= dendrite_nb; i++) {
+
+            // root location
+            Double3 dendrite_root = {0,0,1};
+            // create dendrites
+            MyNeurite my_neurite;
+            auto* ne = bdm_static_cast<MyNeurite*>(
+              cell->ExtendNewNeurite(dendrite_root, &my_neurite));
+            ne->AddBiologyModule(RGC_dendrite_BM());
+            ne->SetHasToRetract(false);
+            ne->SetBeyondThreshold(false);
+            ne->SetSubtype(cell_type);
+          }
+
+          // remove Dendrite_creation_BM when dendrites are created
+          cell->RemoveBiologyModule(this);
+
+        } // end dendrites creation
+      } // end if MyCell
+    } // end Run()
+  }; // end biologyModule Dendrite_creation_BM
+
 
 } // namespace bdm
 

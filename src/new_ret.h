@@ -20,7 +20,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2080; // 2000 = 12 days - 160 steps per day
+  int max_step = 2180; // 2080 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 986;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -75,6 +75,9 @@ inline int Simulate(int argc, const char** argv) {
    for (unsigned int i = 0; i < all_ri.size(); i++) {
      cout << "RI = " << all_ri[i][0] << " for cell type " << all_ri[i][1] << endl;
    }
+   // if (i > 2100) {
+   //   delete [substances];
+   // }
   }
 
   return 0;

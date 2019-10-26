@@ -43,8 +43,61 @@ namespace bdm {
      int internal_clock_ = 0;
      int swc_label_ = 0;
      Double3 previous_position_;
-     double distance_travelled_;
-  };
+     double distance_travelled_ = 0;
+  }; // end MyCell definition
+
+
+  // Define custom cell MyCell extending NeuronSoma
+  class MyNeurite : public experimental::neuroscience::NeuriteElement {
+    BDM_SIM_OBJECT_HEADER(MyNeurite, experimental::neuroscience::NeuriteElement, 1,
+                          has_to_retract_, beyond_threshold_,
+                          diam_before_retract_, subtype_, its_soma_);
+
+   public:
+    MyNeurite() : Base() {}
+
+    virtual ~MyNeurite() {}
+
+    // Default event constructor
+    MyNeurite(const Event& event, SimObject* other, uint64_t new_oid = 0) :
+     Base(event, other, new_oid) {
+      if (event.GetId() ==
+      experimental::neuroscience::NewNeuriteExtensionEvent::kEventId) {
+        its_soma_ = static_cast<MyCell*>(other)->GetSoPtr<MyCell>();
+      } else {
+        its_soma_ = static_cast<MyNeurite*>(other)->its_soma_;
+      }
+    }
+
+    // Default event handler
+    void EventHandler(const Event& event, SimObject* other1,
+                      SimObject* other2 = nullptr) {
+      Base::EventHandler(event, other1, other2);
+    }
+
+    void SetHasToRetract(int r) { has_to_retract_ = r; }
+    bool GetHasToRetract() const { return has_to_retract_; }
+
+    void SetBeyondThreshold(int r) { beyond_threshold_ = r; }
+    bool GetBeyondThreshold() const { return beyond_threshold_; }
+
+    void SetDiamBeforeRetraction(double d) { diam_before_retract_ = d; }
+    double GetDiamBeforeRetraction() const { return diam_before_retract_; }
+
+    void SetSubtype(int st) { subtype_ = st; }
+    int GetSubtype() { return subtype_; }
+
+    void SetMySoma(SoPointer<MyCell> soma) { its_soma_ = soma; }
+    SoPointer<MyCell> GetMySoma() { return its_soma_; }
+
+   private:
+     bool has_to_retract_;
+     bool beyond_threshold_;
+     double diam_before_retract_;
+     int subtype_;
+     SoPointer<MyCell> its_soma_;
+
+  }; // end MyNeurite definition
 
 }
 
