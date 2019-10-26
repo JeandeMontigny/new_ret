@@ -22,11 +22,11 @@ namespace bdm {
       MyCell* cell = new MyCell({x, y, z});
       cell->SetDiameter(random->Uniform(7, 8));
       cell->SetCellType(cellType);
-      cell->SetInternalClock(0);
       cell->SetPreviousPosition({x, y, z});
       cell->AddBiologyModule(new Substance_secretion_BM());
       cell->AddBiologyModule(new RGC_mosaic_BM());
-      // cell.AddBiologyModule(Neurite_creation_BM());
+      cell->AddBiologyModule(new Internal_clock_BM());
+      cell->AddBiologyModule(new Dendrite_creation_BM());
       rm->push_back(cell);
     }
   }  // end CellCreator
