@@ -21,12 +21,17 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2180; // 2080 = 13 days - 160 steps per day
+  int max_step = 2240; // 2080 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 986;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
+
+  bool write_ri = true;
+  bool write_positions = true;
+  bool write_swc = true;
+  bool clean_result_dir = true;
 
   auto set_param = [&](Param* param) {
     // Create an artificial bounds for the simulation space
@@ -46,7 +51,7 @@ inline int Simulate(int argc, const char** argv) {
   auto* random = simulation.GetRandom();
 
   int my_seed = rand() % 10000;
-  // my_seed = 1142; // 9670
+  // my_seed = 9408;
   random->SetSeed(my_seed);
   cout << "Start simulation with " << cell_density
        << " cells/mm^2 using seed " << my_seed << endl;
@@ -55,10 +60,10 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
-  // ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
-  // ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
-  // ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
-  // ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
+  ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
+  ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
+  ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
+  ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const, param->max_bound_/4);
@@ -70,20 +75,83 @@ inline int Simulate(int argc, const char** argv) {
 
   cout << "Cells created and substances initialised" << endl;
 
+  // prepare export
+  ofstream output_ri;
+  if ((write_ri || write_positions || write_swc) && system(
+    Concat("mkdir -p ", param->output_dir_,
+           "/results", my_seed).c_str())) {
+      cout << "error during " << param->output_dir_
+           << "/results folder creation" << endl;
+  }
+  if (write_ri) {
+    output_ri.open(Concat(param->output_dir_, "/results", my_seed,
+                          "/RI_" + to_string(my_seed) + ".txt"));
+  }
+  if (write_positions && system(
+    Concat("mkdir -p ", param->output_dir_,
+           "/results", my_seed, "/cells_position").c_str())) {
+      cout << "error during " << param->output_dir_
+           << "/results"<< my_seed <<"cells_position folder creation" << endl;
+  }
+  if (write_swc && system(
+    Concat("mkdir -p ", param->output_dir_,
+           "/results", my_seed, "/swc_files").c_str())) {
+      cout << "error during " << param->output_dir_
+           << "/results"<< my_seed <<"/swc_files folder creation" << endl;
+  }
+
   // Run simulation
-  for (int i = 0; i <= max_step/160; i++) {
-    scheduler->Simulate(160);
-    cout << setprecision(3) << "day " << i << "/" << (int)max_step/160 << ": "
-         << getDeathRate(num_cells) << "% of cell death" << endl;
-   vector<array<double, 2>> all_ri = getAllRI();
+  cout << "Simulating.." << endl;
+  for (int i = 0; i < max_step/160; i++) {
+    // if we want to export data from simulation
+    if (write_ri || write_positions || write_swc) {
+      for (int repet = 0; repet < 10; repet++) {
+        scheduler->Simulate(16);
+        int current_step = 16+(16*repet)+(160*i);
+
+        if (write_ri) {
+          vector<array<double, 2>> all_ri = GetAllRI();
+          double death_rate = GetDeathRate(num_cells);
+          for (unsigned int ri_i = 0; ri_i < all_ri.size(); ri_i++) {
+            // step ri type death
+            output_ri << current_step << " " << all_ri[ri_i][0]
+                      << " " << all_ri[ri_i][1] << " " << death_rate << "\n";
+          }
+        }
+        if (write_positions) {
+          WritePositions(current_step, my_seed);
+        }
+        if (false && write_swc) {
+          WriteSwc(current_step, my_seed);
+        }
+      } // for step up to 160
+    } // if export data
+
+    else {
+      scheduler->Simulate(160);
+    }
+
+   vector<array<double, 2>> all_ri = GetAllRI();
+   double mean_ri = 0;
    for (unsigned int i = 0; i < all_ri.size(); i++) {
-     cout << "RI = " << all_ri[i][0] << " for cell type " << all_ri[i][1] << endl;
+     mean_ri += all_ri[i][0];
    }
+   cout << setprecision(3)
+        << "Day " << i+1 << "/" << (int)max_step/160 << " simulated:\n"
+        << "Average ri = " << (double)mean_ri/all_ri.size() << " ; "
+        << GetDeathRate(num_cells) << "% of cell death"<< endl;
+   //TODO delete all "mosaic" substances in simulation after mosaics are done
    // if (i > 2100) {
    //   delete [substances];
    // }
   }
 
+  if (write_swc) {
+    WriteSwc(max_step, my_seed);
+    std::cout << "Morphologies exported (swc files)" << std::endl;
+  }
+
+  cout << "Done" << endl;
   return 0;
 } // end Simulate
 
