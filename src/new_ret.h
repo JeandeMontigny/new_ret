@@ -17,11 +17,12 @@
 #include "biodynamo.h"
 #include "extended_objects.h"
 #include "util_methods.h"
+#include "core/substance_initializers.h"
 
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2240; // 2080 = 13 days - 160 steps per day
+  int max_step = 2880; // 2240 = 14 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 986;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -38,7 +39,7 @@ inline int Simulate(int argc, const char** argv) {
     param->bound_space_ = true;
     param->min_bound_ = 0;
     param->max_bound_ = cube_dim + 20;
-    param->run_mechanical_interactions_ = true;
+    param->neurite_max_length_ = 2.0;
   };
 
   // initialise neuroscience modlues
@@ -60,10 +61,10 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
-  ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
-  ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const, param->max_bound_/4);
+  // ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const, param->max_bound_/4);
@@ -72,6 +73,17 @@ inline int Simulate(int argc, const char** argv) {
   // ModelInitializer::DefineSubstance(dg_209_, "off_x", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_210_, "off_y", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_211_, "off_z", diffusion_coef, decay_const, param->max_bound_/4);
+
+
+  ModelInitializer::DefineSubstance(on_dendrites, "on_dendrites", 0, 0,
+                                    param->max_bound_ / 2);
+  ModelInitializer::DefineSubstance(off_dendrites, "off_dendrites", 0, 0,
+                                    param->max_bound_ / 2);
+  // create substance with gaussian distribution for neurite attraction
+  ModelInitializer::InitializeSubstance(on_dendrites, "on_dendrites",
+      GaussianBand(45, 6, Axis::kZAxis));
+  ModelInitializer::InitializeSubstance(off_dendrites, "off_dendrites",
+      GaussianBand(69, 8, Axis::kZAxis));
 
   cout << "Cells created and substances initialised" << endl;
 

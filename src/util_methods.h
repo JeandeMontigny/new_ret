@@ -24,8 +24,8 @@ namespace bdm {
       cell->SetDiameter(random->Uniform(7, 8));
       cell->SetCellType(cell_type);
       cell->SetPreviousPosition({x, y, z});
-      cell->AddBiologyModule(new Substance_secretion_BM());
-      cell->AddBiologyModule(new RGC_mosaic_BM());
+      // cell->AddBiologyModule(new Substance_secretion_BM());
+      // cell->AddBiologyModule(new RGC_mosaic_BM());
       cell->AddBiologyModule(new Internal_clock_BM());
       cell->AddBiologyModule(new Dendrite_creation_BM());
       rm->push_back(cell);

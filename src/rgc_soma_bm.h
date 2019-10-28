@@ -10,7 +10,8 @@ namespace bdm {
   // enumerate substances in simulation
   // enum Substances { dg_200_, dg_201_, dg_202_, dg_203_, dg_204_, dg_205_,
   //                   dg_206_, dg_207_, dg_208_, dg_209_, dg_210_, dg_211_ };
-  enum Substances { dg_200_, dg_201_, dg_202_, dg_203_};
+  // enum Substances { dg_200_, dg_201_, dg_202_, dg_203_}
+  enum Substances { on_dendrites, off_dendrites};
 
   // Define cell behavior for mosaic formation
   struct RGC_mosaic_BM : public BaseBiologyModule {
