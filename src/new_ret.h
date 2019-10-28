@@ -36,6 +36,9 @@ inline int Simulate(int argc, const char** argv) {
     param->run_mechanical_interactions_ = true;
   };
 
+  // initialise neuroscience modlues
+  experimental::neuroscience::InitModule();
+
   Simulation simulation(argc, argv, set_param);
   // auto* rm = simulation.GetResourceManager();
   auto* scheduler = simulation.GetScheduler();
