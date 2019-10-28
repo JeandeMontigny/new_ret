@@ -269,11 +269,6 @@ namespace bdm {
           cell->SetInternalClock(cell->GetInternalClock() + 1);
         }
 
-        if (cell->GetInternalClock() > 2021) {
-          // remove Internal_clock_BM when not needed anymore
-          cell->RemoveBiologyModule(this);
-        }
-
       } // end if MyCell
     } // end Run()
   }; // end biologyModule Internal_clock_BM
@@ -312,7 +307,7 @@ namespace bdm {
             dendrite_nb = 3 + (int)random->Uniform(1, 3);
           }
           else {
-            dendrite_nb = 2;
+            dendrite_nb = 4;
           }
 
           for (int i = 0; i <= dendrite_nb; i++) {
@@ -322,6 +317,7 @@ namespace bdm {
             MyNeurite my_neurite;
             auto* ne = bdm_static_cast<MyNeurite*>(
               cell->ExtendNewNeurite(dendrite_root, &my_neurite));
+            ne->SetDiameter(1);
             ne->AddBiologyModule(new RGC_dendrite_BM());
             ne->SetHasToRetract(false);
             ne->SetBeyondThreshold(false);

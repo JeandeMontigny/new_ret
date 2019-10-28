@@ -19,6 +19,7 @@ namespace bdm {
       double y = random->Uniform(min + 10, max - 10);
       // RGCL thickness before cell death ~24
       double z = random->Uniform(min + 20, min + 34);
+      z = 27;
 
       MyCell* cell = new MyCell({x, y, z});
       cell->SetDiameter(random->Uniform(7, 8));

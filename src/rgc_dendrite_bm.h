@@ -43,7 +43,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 
       if (ne->IsTerminal() && ne->GetDiameter() >= 0.5) {
 
-        int cell_type = ne->GetMySoma()->GetLabel();
+        int cell_type = ne->GetMySoma()->GetCellType();
         Double3 gradient_guide;
         double concentration = 0;
 
@@ -51,6 +51,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         double randomness_weight = 0.5;
         double old_direction_weight = 4.5;
         double concentration_threshold = 0.01;
+        double bifurc_proba = 0.01*ne->GetDiameter();
 
         if (ne->GetSubtype()/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
@@ -73,35 +74,14 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           concentration = dg_guide_off_->GetConcentration(ne->GetPosition());
         }
 
-
-        // ---- NOTE: FOR TEST ONLY ---- //
-        if (cell_type == 202) {
-          dg_guide_on_->GetGradient(ne->GetPosition(), &gradient_guide);
-          concentration = dg_guide_on_->GetConcentration(ne->GetPosition());
-        }
-        if (cell_type == 201 || cell_type == 200) {
-          double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
-          double conc_off = dg_guide_off_->GetConcentration(ne->GetPosition());
-          if (conc_on > conc_off) {
-            concentration = conc_on;
-            dg_guide_on_->GetGradient(ne->GetPosition(), &gradient_guide);
-          }
-          else {
-            concentration = conc_off;
-            dg_guide_off_->GetGradient(ne->GetPosition(), &gradient_guide);
-          }
-        }
-        // ---- END FOR TEST ONLY ---- //
-
         // if neurite doesn't have to retract
         if (!ne->GetHasToRetract()) {
-          double bifurcProba = 0.01*ne->GetDiameter();
 
           Double3 random_axis = {random->Uniform(-1, 1),
                                  random->Uniform(-1, 1),
                                  random->Uniform(-1, 1)};
           auto old_direction = ne->GetSpringAxis() * old_direction_weight;
-          auto grad_direction = gradient_weight * gradient_weight;
+          auto grad_direction = gradient_guide * gradient_weight;
           auto random_direction = random_axis * randomness_weight;
           Double3 new_step_direction =
             old_direction + grad_direction + random_direction;
@@ -109,7 +89,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           ne->ElongateTerminalEnd(25, new_step_direction);
           ne->SetDiameter(ne->GetDiameter()-0.0007);
 
-          if (concentration > 0.04 && random->Uniform() < bifurcProba) {
+          if (concentration > 0.04 && random->Uniform() < bifurc_proba) {
             ne->SetDiameter(ne->GetDiameter()-0.005);
             ne->Bifurcate();
           }
@@ -135,16 +115,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           });
 
           // if is surrounded by homotype dendrites
-          if (sameType >= otherType) {
+          if (sameType > otherType) {
             ne->SetHasToRetract(true);
             ne->SetDiamBeforeRetraction(ne->GetDiameter());
           }
-
-          // if neurite is going too far away from guide
-          if (concentration < 0.01 && ne->GetDiameter() < 0.9) {
-  					ne->SetHasToRetract(true);
-  					ne->SetBeyondThreshold(true);
-  				}
 
           // if neurite is going too far away from guide
           if (concentration < concentration_threshold && ne->GetDiameter() < 0.9) {
