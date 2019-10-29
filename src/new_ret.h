@@ -29,8 +29,8 @@ inline int Simulate(int argc, const char** argv) {
   double decay_const = 0.1;
 
   bool write_ri = true;
-  bool write_positions = true;
-  bool write_swc = true;
+  bool write_positions = false;
+  bool write_swc = false;
   bool clean_result_dir = true;
 
   auto set_param = [&](Param* param) {
@@ -76,7 +76,7 @@ inline int Simulate(int argc, const char** argv) {
   ModelInitializer::DefineSubstance(dg_010_, "on-off_y", diffusion_coef, decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_011_, "on-off_z", diffusion_coef, decay_const, param->max_bound_/4);
   // on
-  // 40, 40, 40, 56, 20, 20, 150, 100, 100, 80, 60, 60, 50, 50, 40, 34, 20, 20, 20
+  // 40, 40, 40, 40, 56, 20, 20, 150, 100, 100, 80, 60, 60, 50, 50, 34, 20, 20, 20
   ModelInitializer::DefineSubstance(dg_100_, "on_dsgca", diffusion_coef, decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_101_, "on_dsgcb", diffusion_coef, decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_102_, "on_dsgcc", diffusion_coef, decay_const, param->max_bound_/4);
