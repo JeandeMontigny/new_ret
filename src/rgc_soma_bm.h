@@ -8,9 +8,14 @@
 namespace bdm {
 
   // enumerate substances in simulation
-  // enum Substances { dg_200_, dg_201_, dg_202_, dg_203_, dg_204_, dg_205_,
-  //                   dg_206_, dg_207_, dg_208_, dg_209_, dg_210_, dg_211_ };
-  enum Substances { dg_200_, dg_201_, dg_202_, dg_203_};
+  enum Substances { dg_000_, dg_001_, dg_002_, dg_003_, dg_004_, dg_005_,
+                    dg_006_, dg_007_, dg_008_, dg_009_, dg_010_, dg_011_,
+                    dg_100_, dg_101_, dg_102_, dg_103_, dg_104_, dg_105_,
+                    dg_106_, dg_107_, dg_108_, dg_109_, dg_110_, dg_111_,
+                    dg_112_, dg_113_, dg_114_, dg_115_, dg_116_, dg_117_,
+                    dg_118_,
+                    dg_200_, dg_201_, dg_202_, dg_203_, dg_204_, dg_205_,
+                    dg_206_, dg_207_, dg_208_, dg_209_, dg_210_, dg_211_ };
 
   // Define cell behavior for mosaic formation
   struct RGC_mosaic_BM : public BaseBiologyModule {
@@ -77,9 +82,28 @@ namespace bdm {
           };
 
           // density to obtain: 114, 114, 185, 571
-          array<string, 4> substances_list = { "off_aplhaa", "off_aplhab", "off_m1", "off_j" };
-          array<int, 4> cells_types = { 200, 201, 202, 203 };
-          array<double, 4> proba = { 0.115, 0.115, 0.188, 0.58 };
+          array<string, 43> substances_list =
+            { "on-off_dsgca", "on-off_dsgcb", "on-off_dsgcc", "on-off_dsgcd",
+              "on-off_m3", "on-off_led", "on-off_u", "on-off_v", "on-off_w",
+              "on-off_x", "on-off_y", "on-off_z",
+              "on_dsgca", "on_dsgcb", "on_dsgcc", "on_aplha", "on_m2", "on_m4",
+              "on_m5", "on_o", "on_p","on_q", "on_r", "on_s", "on_t", "on_u",
+              "on_v", "on_w", "on_x", "on_y", "on_z",
+              "off_aplhaa", "off_aplhab", "off_m1", "off_j", "off_mini_j",
+              "off_midi_j", "off_u", "off_v", "off_w", "off_x", "off_y", "off_z" };
+          array<int, 43> cells_types =
+            { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+              100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111,
+              112, 113, 114, 115, 116, 117, 118,
+              200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211 };
+          array<double, 43> proba =
+            { 0.04166, 0.04166, 0.04166, 0.04166, 0.00666, 0.08333, 0.00666,
+              0.00666, 0.02, 0.01666, 0.01333, 0.01333,
+              0.01333, 0.01333, 0.01333, 0.01866, 0.00666, 0.00666, 0.05, 0.03333,
+              0.03333, 0.02666, 0.02, 0.02, 0.01666, 0.01666, 0.01333, 0.01133,
+              0.00666, 0.00666, 0.00666,
+              0.01333, 0.01333, 0.021, 0.06666, 0.11666, 0.02666, 0.00666, 0.00666,
+              0.02, 0.01666, 0.01333, 0.01233 };
           vector<conc_type> conc_type_list;
           for (size_t i=0; i < substances_list.size(); i++) {
             dg = rm->GetDiffusionGrid(substances_list[i]);
