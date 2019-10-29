@@ -310,6 +310,8 @@ namespace bdm {
         }
         else if (cell_type == 204) {
           dg = rm->GetDiffusionGrid("off_mini_j");
+          movement_threshold = 1.745;
+          death_threshold = 1.765;
         }
         else if (cell_type == 205) {
           dg = rm->GetDiffusionGrid("off_midi_j");
@@ -423,17 +425,139 @@ namespace bdm {
         int cell_type = cell->GetCellType();
         DiffusionGrid* dg = nullptr;
         // use corresponding diffusion grid
-        if (cell_type == 200) {
+        if (cell_type == 0) {
+          dg = rm->GetDiffusionGrid("on-off_dsgca");
+        }
+        else if (cell_type == 1) {
+          dg = rm->GetDiffusionGrid("on-off_dsgcb");
+        }
+        else if (cell_type == 2) {
+          dg = rm->GetDiffusionGrid("on-off_dsgcc");
+        }
+        else if (cell_type == 3) {
+          dg = rm->GetDiffusionGrid("on-off_dsgcd");
+        }
+        else if (cell_type == 4) {
+          dg = rm->GetDiffusionGrid("on-off_m3");
+        }
+        else if (cell_type == 5) {
+          dg = rm->GetDiffusionGrid("on-off_led");
+        }
+        else if (cell_type == 6) {
+          dg = rm->GetDiffusionGrid("on-off_u");
+        }
+        else if (cell_type == 7) {
+          dg = rm->GetDiffusionGrid("on-off_v");
+        }
+        else if (cell_type == 8) {
+          dg = rm->GetDiffusionGrid("on-off_w");
+        }
+        else if (cell_type == 9) {
+          dg = rm->GetDiffusionGrid("on-off_x");
+        }
+        else if (cell_type == 10) {
+          dg = rm->GetDiffusionGrid("on-off_y");
+        }
+        else if (cell_type == 11) {
+          dg = rm->GetDiffusionGrid("on-off_z");
+        }
+        // on
+        else if (cell_type == 100) {
+          dg = rm->GetDiffusionGrid("on_dsgca");
+        }
+        else if (cell_type == 101) {
+          dg = rm->GetDiffusionGrid("on_dsgcb");
+        }
+        else if (cell_type == 102) {
+          dg = rm->GetDiffusionGrid("on_dsgcc");
+        }
+        else if (cell_type == 103) {
+          dg = rm->GetDiffusionGrid("on_aplha");
+        }
+        else if (cell_type == 104) {
+          dg = rm->GetDiffusionGrid("on_m2");
+        }
+        else if (cell_type == 105) {
+          dg = rm->GetDiffusionGrid("on_m4");
+        }
+        else if (cell_type == 106) {
+          dg = rm->GetDiffusionGrid("on_m5");
+        }
+        else if (cell_type == 107) {
+          dg = rm->GetDiffusionGrid("on_o");
+        }
+        else if (cell_type == 108) {
+          dg = rm->GetDiffusionGrid("on_p");
+        }
+        else if (cell_type == 109) {
+          dg = rm->GetDiffusionGrid("on_q");
+        }
+        else if (cell_type == 110) {
+          dg = rm->GetDiffusionGrid("on_r");
+        }
+        else if (cell_type == 111) {
+          dg = rm->GetDiffusionGrid("on_s");
+        }
+        else if (cell_type == 112) {
+          dg = rm->GetDiffusionGrid("on_t");
+        }
+        else if (cell_type == 113) {
+          dg = rm->GetDiffusionGrid("on_u");
+        }
+        else if (cell_type == 114) {
+          dg = rm->GetDiffusionGrid("on_v");
+        }
+        else if (cell_type == 115) {
+          dg = rm->GetDiffusionGrid("on_w");
+        }
+        else if (cell_type == 116) {
+          dg = rm->GetDiffusionGrid("on_x");
+        }
+        else if (cell_type == 117) {
+          dg = rm->GetDiffusionGrid("on_y");
+        }
+        else if (cell_type == 118) {
+          dg = rm->GetDiffusionGrid("on_z");
+        }
+        // off
+        else if (cell_type == 200) {
           dg = rm->GetDiffusionGrid("off_aplhaa");
         }
-        if (cell_type == 201) {
+        else if (cell_type == 201) {
           dg = rm->GetDiffusionGrid("off_aplhab");
         }
-        if (cell_type == 202) {
+        else if (cell_type == 202) {
           dg = rm->GetDiffusionGrid("off_m1");
         }
-        if (cell_type == 203) {
+        else if (cell_type == 203) {
           dg = rm->GetDiffusionGrid("off_j");
+        }
+        else if (cell_type == 204) {
+          dg = rm->GetDiffusionGrid("off_mini_j");
+        }
+        else if (cell_type == 205) {
+          dg = rm->GetDiffusionGrid("off_midi_j");
+        }
+        else if (cell_type == 206) {
+          dg = rm->GetDiffusionGrid("off_u");
+        }
+        else if (cell_type == 207) {
+          dg = rm->GetDiffusionGrid("off_v");
+        }
+        else if (cell_type == 208) {
+          dg = rm->GetDiffusionGrid("off_w");
+        }
+        else if (cell_type == 209) {
+          dg = rm->GetDiffusionGrid("off_x");
+        }
+        else if (cell_type == 210) {
+          dg = rm->GetDiffusionGrid("off_y");
+        }
+        else if (cell_type == 211) {
+          dg = rm->GetDiffusionGrid("off_z");
+        }
+        else {
+          cout << "error: no valid cell type" << endl;
         }
 
         if (cell->GetInternalClock()%3==0) {
