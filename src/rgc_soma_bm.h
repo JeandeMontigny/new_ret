@@ -133,22 +133,22 @@ namespace bdm {
         // on-off
         if (cell_type == 0) {
           dg = rm->GetDiffusionGrid("on-off_dsgca");
-          movement_threshold = 1.718;
+          movement_threshold = 1.717;
           death_threshold = 1.776;
         }
         else if (cell_type == 1) {
           dg = rm->GetDiffusionGrid("on-off_dsgcb");
-          movement_threshold = 1.718;
+          movement_threshold = 1.717;
           death_threshold = 1.776;
         }
         else if (cell_type == 2) {
           dg = rm->GetDiffusionGrid("on-off_dsgcc");
-          movement_threshold = 1.718;
+          movement_threshold = 1.717;
           death_threshold = 1.776;
         }
         else if (cell_type == 3) {
           dg = rm->GetDiffusionGrid("on-off_dsgcd");
-          movement_threshold = 1.718;
+          movement_threshold = 1.717;
           death_threshold = 1.776;
         }
         else if (cell_type == 4) {
@@ -158,8 +158,8 @@ namespace bdm {
         }
         else if (cell_type == 5) {
           dg = rm->GetDiffusionGrid("on-off_led");
-          movement_threshold = 1.7353;
-          death_threshold = 1.765;
+          movement_threshold = 1.735;
+          death_threshold = 1.766;
         }
         else if (cell_type == 6) {
           dg = rm->GetDiffusionGrid("on-off_u");
@@ -229,17 +229,17 @@ namespace bdm {
         }
         else if (cell_type == 107) {
           dg = rm->GetDiffusionGrid("on_o");
-          movement_threshold = 1.722;
+          movement_threshold = 1.72;
           death_threshold = 1.774;
         }
         else if (cell_type == 108) {
           dg = rm->GetDiffusionGrid("on_p");
-          movement_threshold = 1.715;
+          movement_threshold = 1.714;
           death_threshold = 1.778;
         }
         else if (cell_type == 109) {
           dg = rm->GetDiffusionGrid("on_q");
-          movement_threshold = 1.715;
+          movement_threshold = 1.714;
           death_threshold = 1.778;
         }
         else if (cell_type == 110) {
@@ -300,22 +300,22 @@ namespace bdm {
         }
         else if (cell_type == 202) {
           dg = rm->GetDiffusionGrid("off_m1");
-          movement_threshold = 1.71;
+          movement_threshold = 1.709;
           death_threshold = 1.78;
         }
         else if (cell_type == 203) {
           dg = rm->GetDiffusionGrid("off_j");
-          movement_threshold = 1.727;
+          movement_threshold = 1.726;
           death_threshold = 1.772;
         }
         else if (cell_type == 204) {
           dg = rm->GetDiffusionGrid("off_mini_j");
-          movement_threshold = 1.745;
+          movement_threshold = 1.744;
           death_threshold = 1.765;
         }
         else if (cell_type == 205) {
           dg = rm->GetDiffusionGrid("off_midi_j");
-          movement_threshold = 1.711;
+          movement_threshold = 1.71;
           death_threshold = 1.779;
         }
         else if (cell_type == 206) {

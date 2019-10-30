@@ -23,13 +23,13 @@ namespace bdm {
 inline int Simulate(int argc, const char** argv) {
   int max_step = 2240; // 2080 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 986;
+  int cell_density = 8600;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
 
   bool write_ri = true;
-  bool write_positions = false;
+  bool write_positions = true;
   bool write_swc = false;
   bool clean_result_dir = true;
 
