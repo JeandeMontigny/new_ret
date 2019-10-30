@@ -15,8 +15,8 @@ namespace bdm {
     auto* random = sim->GetRandom();
 
     for (int i = 0; i < num_cells; i++) {
-      double x = random->Uniform(min + 10, max - 10);
-      double y = random->Uniform(min + 10, max - 10);
+      double x = random->Uniform(min + 100, max - 100);
+      double y = random->Uniform(min + 100, max - 100);
       // RGCL thickness before cell death ~24
       double z = random->Uniform(min + 20, min + 34);
       z = 27;

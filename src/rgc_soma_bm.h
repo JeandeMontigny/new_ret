@@ -290,25 +290,27 @@ namespace bdm {
           auto* random = Simulation::GetActive()->GetRandom();
 
           int cell_type = cell->GetCellType();
-
-          int dendrite_nb = 0;
-          // dendrites number depending on cell type
           //NOTE: average dendrites number = 4.5; std = 1.2
-          if (cell_type == 200) {
-            dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          int dendrite_nb = (int)random->Uniform(2, 7);
+          // dendrites number depending on cell type
+          if (cell_type == 0 || cell_type == 1
+            || cell_type == 2 || cell_type == 3) {
+            dendrite_nb = (int)random->Uniform(5, 8);
           }
-          else if (cell_type == 201) {
-            dendrite_nb = 2 + (int)random->Uniform(1, 3);
-          }
-          else if (cell_type == 202) {
-            dendrite_nb = 2 + (int)random->Uniform(1, 3);
-          }
-          else if (cell_type == 203) {
-            dendrite_nb = 3 + (int)random->Uniform(1, 3);
-          }
-          else {
-            dendrite_nb = 4;
-          }
+
+
+          // if (cell_type == 200) {
+          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          // }
+          // else if (cell_type == 201) {
+          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          // }
+          // else if (cell_type == 202) {
+          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
+          // }
+          // else if (cell_type == 203) {
+          //   dendrite_nb = 3 + (int)random->Uniform(1, 3);
+          // }
 
           for (int i = 0; i <= dendrite_nb; i++) {
             // root location - TODO: no overlap

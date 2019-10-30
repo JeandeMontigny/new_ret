@@ -22,23 +22,23 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2880; // 2240 = 14 days - 160 steps per day
+  int max_step = 3200; // 2240 = 14 days - 160 steps per day
   int cube_dim = 500; // 1000
   int cell_density = 986;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
 
-  bool write_ri = true;
-  bool write_positions = true;
+  bool write_ri = false;
+  bool write_positions = false;
   bool write_swc = true;
-  bool clean_result_dir = true;
+  bool clean_output_dir = true;
 
   auto set_param = [&](Param* param) {
     // Create an artificial bounds for the simulation space
     param->bound_space_ = true;
     param->min_bound_ = 0;
-    param->max_bound_ = cube_dim + 20;
+    param->max_bound_ = cube_dim + 200;
   };
 
   // initialise neuroscience modlues
@@ -58,9 +58,12 @@ inline int Simulate(int argc, const char** argv) {
 
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  CellCreator(param->min_bound_, param->max_bound_, 1, 001);
-  CellCreator(param->min_bound_, param->max_bound_, 1, 101);
-  CellCreator(param->min_bound_, param->max_bound_, 1, 201);
+  CellCreator(param->min_bound_, param->max_bound_, 10, 0);
+  CellCreator(param->min_bound_, param->max_bound_, 10, 1);
+  CellCreator(param->min_bound_, param->max_bound_, 10, 2);
+  CellCreator(param->min_bound_, param->max_bound_, 10, 3);
+  CellCreator(param->min_bound_, param->max_bound_, 0, 101);
+  CellCreator(param->min_bound_, param->max_bound_, 0, 201);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   // ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
@@ -91,6 +94,13 @@ inline int Simulate(int argc, const char** argv) {
 
   cout << "Cells created and substances initialised" << endl;
 
+  //clean output dir
+  if (clean_output_dir) {
+    if (!system(Concat("[ -d ", param->output_dir_ ," ]").c_str())) {
+      system(Concat("rm -rf ", param->output_dir_ ,"/results*").c_str());
+      cout << "\'" << param->output_dir_ << "\'" << " folder cleaned" << endl;
+    }
+  }
   // prepare export
   ofstream output_ri;
   if ((write_ri || write_positions || write_swc) && system(

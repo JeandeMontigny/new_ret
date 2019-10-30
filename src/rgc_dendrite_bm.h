@@ -51,7 +51,9 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         double randomness_weight = 0.5;
         double old_direction_weight = 4.5;
         double concentration_threshold = 0.01;
+        double shrinkage = 0.0007;
         double bifurc_proba = 0.01*ne->GetDiameter();
+        double bifurc_threshold = 0.04;
 
         if (ne->GetSubtype()/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
@@ -74,9 +76,18 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           concentration = dg_guide_off_->GetConcentration(ne->GetPosition());
         }
 
+        if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
+          || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
+          // gradient_weight = 0.2;
+          // randomness_weight = 0.5;
+          // old_direction_weight = 4.5;
+          shrinkage = 0.00058; // 0.00059
+          bifurc_proba = 0.0086 * ne->GetDiameter(); // 0.0086
+          bifurc_threshold = 0.042;
+        }
+
         // if neurite doesn't have to retract
         if (!ne->GetHasToRetract()) {
-
           Double3 random_axis = {random->Uniform(-1, 1),
                                  random->Uniform(-1, 1),
                                  random->Uniform(-1, 1)};
@@ -87,30 +98,38 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
             old_direction + grad_direction + random_direction;
 
           ne->ElongateTerminalEnd(25, new_step_direction);
-          ne->SetDiameter(ne->GetDiameter()-0.0007);
+          ne->SetDiameter(ne->GetDiameter() - shrinkage);
 
-          if (concentration > 0.04 && random->Uniform() < bifurc_proba) {
-            ne->SetDiameter(ne->GetDiameter()-0.005);
+          if (concentration > bifurc_threshold && random->Uniform() < bifurc_proba) {
+            ne->SetDiameter(ne->GetDiameter() - 0.005);
             ne->Bifurcate();
           }
 
           // homo-type interaction
-          double squared_radius = 1.1; // 1.2
+          double squared_radius = 2.5;
           int sameType = 0;
           int otherType = 0;
           // counters for neurites neighbours
           rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
             auto* neighbor = dynamic_cast<MyNeurite*>(so);
             if (neighbor) {
+              Double3 neighbor_position = neighbor->GetPosition();
+              Double3 ne_position = ne->GetPosition();
+              double distance =
+                pow(ne_position[0] - neighbor_position[0], 2) +
+                pow(ne_position[1] - neighbor_position[1], 2) +
+                pow(ne_position[2] - neighbor_position[2], 2);
               // if not the same soma
-              if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
-                if (neighbor->GetMySoma()->GetCellType() == cell_type) {
-                  sameType++;
+              if (distance < squared_radius) {
+                if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
+                  if (neighbor->GetMySoma()->GetCellType() == cell_type) {
+                    sameType++;
+                  }
+                  else {
+                    otherType++;
+                  }
                 }
-                else {
-                  otherType++;
-                }
-              }
+              } // if within radius
             }
           });
 
@@ -121,7 +140,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           }
 
           // if neurite is going too far away from guide
-          if (concentration < concentration_threshold && ne->GetDiameter() < 0.9) {
+          if (concentration < concentration_threshold && ne->GetDiameter() < 0.85) {
             ne->SetHasToRetract(true);
             ne->SetBeyondThreshold(true);
           }
@@ -145,6 +164,11 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         }
 
       } // end if terminal
+
+      // if not terminal or diameter is too small
+      else {
+        ne->RemoveBiologyModule(this);
+      }
 
     } // end if MyNeurite
   } // end Run()
