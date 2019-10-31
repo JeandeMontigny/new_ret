@@ -15,8 +15,8 @@ namespace bdm {
     auto* random = sim->GetRandom();
 
     for (int i = 0; i < num_cells; i++) {
-      double x = random->Uniform(min + 100, max - 100);
-      double y = random->Uniform(min + 100, max - 100);
+      double x = random->Uniform(min + 150, max - 150);
+      double y = random->Uniform(min + 150, max - 150);
       // RGCL thickness before cell death ~24
       double z = random->Uniform(min + 20, min + 34);
       z = 27;
@@ -231,6 +231,22 @@ namespace bdm {
 
     return (1 - ((double)cell_in_simu / num_cells)) * 100;
   } // end GetDeathRate
+
+
+  inline int RandomPoisson(double mean) {
+    auto* random = Simulation::GetActive()->GetRandom();
+    double L = exp(-mean);
+    int k = 0;
+    double p = 1;
+    do {
+        k = k + 1;
+        double u = random->Uniform();
+        p = p * u;
+    } while (p > L);
+
+    return k - 1;
+  } // end RandomPoisson
+
 
 }
 

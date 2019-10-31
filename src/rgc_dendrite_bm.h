@@ -46,19 +46,28 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         int cell_type = ne->GetMySoma()->GetCellType();
         Double3 gradient_guide;
         double concentration = 0;
-
+        double on_off_factor = 1;
+        bool homotypic_competition = true;
         double gradient_weight = 0.2;
         double randomness_weight = 0.5;
         double old_direction_weight = 4.5;
-        double concentration_threshold = 0.01;
+        double conc_retract_threshold = 0.01;
         double shrinkage = 0.0007;
         double bifurc_proba = 0.01*ne->GetDiameter();
         double bifurc_threshold = 0.04;
 
+        if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
+        || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
+          on_off_factor = 3;
+          randomness_weight = 0.8;
+          shrinkage = 0.0004;
+          bifurc_proba = 0.008 * ne->GetDiameter(); // 0.00675
+        }
+
         if (ne->GetSubtype()/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
           double conc_off = dg_guide_off_->GetConcentration(ne->GetPosition());
-          if (conc_on > conc_off) {
+          if (conc_on > conc_off * on_off_factor) {
             concentration = conc_on;
             dg_guide_on_->GetGradient(ne->GetPosition(), &gradient_guide);
           }
@@ -76,15 +85,6 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           concentration = dg_guide_off_->GetConcentration(ne->GetPosition());
         }
 
-        if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
-          || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
-          // gradient_weight = 0.2;
-          // randomness_weight = 0.5;
-          // old_direction_weight = 4.5;
-          shrinkage = 0.00058; // 0.00059
-          bifurc_proba = 0.0086 * ne->GetDiameter(); // 0.0086
-          bifurc_threshold = 0.042;
-        }
 
         // if neurite doesn't have to retract
         if (!ne->GetHasToRetract()) {
@@ -106,41 +106,42 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           }
 
           // homo-type interaction
-          double squared_radius = 2.5;
-          int sameType = 0;
-          int otherType = 0;
-          // counters for neurites neighbours
-          rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
-            auto* neighbor = dynamic_cast<MyNeurite*>(so);
-            if (neighbor) {
-              Double3 neighbor_position = neighbor->GetPosition();
-              Double3 ne_position = ne->GetPosition();
-              double distance =
-                pow(ne_position[0] - neighbor_position[0], 2) +
-                pow(ne_position[1] - neighbor_position[1], 2) +
-                pow(ne_position[2] - neighbor_position[2], 2);
-              // if not the same soma
-              if (distance < squared_radius) {
-                if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
-                  if (neighbor->GetMySoma()->GetCellType() == cell_type) {
-                    sameType++;
+          if (homotypic_competition) {
+            double squared_radius = 1.21;
+            int sameType = 0;
+            int otherType = 0;
+            // counters for neurites neighbours
+            rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+              auto* neighbor = dynamic_cast<MyNeurite*>(so);
+              if (neighbor) {
+                Double3 neighbor_position = neighbor->GetPosition();
+                Double3 ne_position = ne->GetPosition();
+                double distance =
+                  pow(ne_position[0] - neighbor_position[0], 2) +
+                  pow(ne_position[1] - neighbor_position[1], 2) +
+                  pow(ne_position[2] - neighbor_position[2], 2);
+                // if not the same soma
+                if (distance < squared_radius) {
+                  if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
+                    if (neighbor->GetMySoma()->GetCellType() == cell_type) {
+                      sameType++;
+                    }
+                    else {
+                      otherType++;
+                    }
                   }
-                  else {
-                    otherType++;
-                  }
-                }
-              } // if within radius
+                } // if within radius
+              }
+            });
+            // if is surrounded by homotype dendrites
+            if (sameType > otherType) {
+              ne->SetHasToRetract(true);
+              ne->SetDiamBeforeRetraction(ne->GetDiameter());
             }
-          });
-
-          // if is surrounded by homotype dendrites
-          if (sameType > otherType) {
-            ne->SetHasToRetract(true);
-            ne->SetDiamBeforeRetraction(ne->GetDiameter());
-          }
+          } // end homo-type interaction
 
           // if neurite is going too far away from guide
-          if (concentration < concentration_threshold && ne->GetDiameter() < 0.85) {
+          if (concentration < conc_retract_threshold && ne->GetDiameter() < 0.85) {
             ne->SetHasToRetract(true);
             ne->SetBeyondThreshold(true);
           }

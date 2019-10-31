@@ -22,9 +22,9 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 3200; // 2240 = 14 days - 160 steps per day
+  int max_step = 3360; // 2240 = 14 days - 160 steps per day
   int cube_dim = 500; // 1000
-  int cell_density = 986;
+  int cell_density = 500;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   double diffusion_coef = 0.5;
   double decay_const = 0.1;
@@ -38,7 +38,7 @@ inline int Simulate(int argc, const char** argv) {
     // Create an artificial bounds for the simulation space
     param->bound_space_ = true;
     param->min_bound_ = 0;
-    param->max_bound_ = cube_dim + 200;
+    param->max_bound_ = cube_dim + 300;
   };
 
   // initialise neuroscience modlues
@@ -58,10 +58,10 @@ inline int Simulate(int argc, const char** argv) {
 
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  CellCreator(param->min_bound_, param->max_bound_, 10, 0);
-  CellCreator(param->min_bound_, param->max_bound_, 10, 1);
-  CellCreator(param->min_bound_, param->max_bound_, 10, 2);
-  CellCreator(param->min_bound_, param->max_bound_, 10, 3);
+  CellCreator(param->min_bound_, param->max_bound_, 31, 0);
+  CellCreator(param->min_bound_, param->max_bound_, 0, 1);
+  CellCreator(param->min_bound_, param->max_bound_, 0, 2);
+  CellCreator(param->min_bound_, param->max_bound_, 0, 3);
   CellCreator(param->min_bound_, param->max_bound_, 0, 101);
   CellCreator(param->min_bound_, param->max_bound_, 0, 201);
 
