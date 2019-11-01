@@ -306,8 +306,11 @@ namespace bdm {
               p = p * u;
             } while (p > L);
             dendrite_nb = k - 1;
-            if (dendrite_nb < 4) { dendrite_nb = 4; } // 3, 3
-            else if (dendrite_nb > 7) { dendrite_nb = 5; } // 6, 4
+            if (dendrite_nb < 4) { dendrite_nb = 4; }
+            else if (dendrite_nb > 7) { dendrite_nb = 5; }
+          }
+          if (cell_type == 5) {
+            dendrite_nb = (int)random->Uniform(3, 6);
           }
 
           // if (cell_type == 200) {

@@ -58,10 +58,11 @@ inline int Simulate(int argc, const char** argv) {
 
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  CellCreator(param->min_bound_, param->max_bound_, 31, 0);
-  CellCreator(param->min_bound_, param->max_bound_, 0, 1);
-  CellCreator(param->min_bound_, param->max_bound_, 0, 2);
-  CellCreator(param->min_bound_, param->max_bound_, 0, 3);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 0);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 1);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 2);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 3);
+  CellCreator(param->min_bound_, param->max_bound_, 62, 5);
   CellCreator(param->min_bound_, param->max_bound_, 0, 101);
   CellCreator(param->min_bound_, param->max_bound_, 0, 201);
 

@@ -52,6 +52,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         double randomness_weight = 0.5;
         double old_direction_weight = 4.5;
         double conc_retract_threshold = 0.01;
+        double diam_retract_threshold = 0.85;
         double shrinkage = 0.0007;
         double bifurc_proba = 0.01*ne->GetDiameter();
         double bifurc_threshold = 0.04;
@@ -61,10 +62,18 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           on_off_factor = 3;
           randomness_weight = 0.8;
           shrinkage = 0.0004;
-          bifurc_proba = 0.008 * ne->GetDiameter(); // 0.00675
+          bifurc_proba = 0.008 * ne->GetDiameter();
+        }
+        if (cell_type == 5) {
+          shrinkage = 0.000682;
+          randomness_weight = 0.8;
+          homotypic_competition = false;
+          bifurc_proba = 0.0127 * ne->GetDiameter();
+          bifurc_threshold = 0.038;
+          diam_retract_threshold = 0.8;
         }
 
-        if (ne->GetSubtype()/100 == 0) {
+        if (cell_type/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
           double conc_off = dg_guide_off_->GetConcentration(ne->GetPosition());
           if (conc_on > conc_off * on_off_factor) {
@@ -80,7 +89,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           dg_guide_on_->GetGradient(ne->GetPosition(), &gradient_guide);
           concentration = dg_guide_on_->GetConcentration(ne->GetPosition());
         }
-        if (cell_type/100 == 2) {
+        if (cell_type/100 == 2 || cell_type == 5) {
           dg_guide_off_->GetGradient(ne->GetPosition(), &gradient_guide);
           concentration = dg_guide_off_->GetConcentration(ne->GetPosition());
         }
@@ -105,9 +114,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
             ne->Bifurcate();
           }
 
+          // cout << "homotypic_competition: " << homotypic_competition << endl;
           // homo-type interaction
           if (homotypic_competition) {
-            double squared_radius = 1.21;
+            double squared_radius = 1;
             int sameType = 0;
             int otherType = 0;
             // counters for neurites neighbours
@@ -141,7 +151,8 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           } // end homo-type interaction
 
           // if neurite is going too far away from guide
-          if (concentration < conc_retract_threshold && ne->GetDiameter() < 0.85) {
+          if (concentration < conc_retract_threshold
+            && ne->GetDiameter() < diam_retract_threshold) {
             ne->SetHasToRetract(true);
             ne->SetBeyondThreshold(true);
           }
@@ -158,7 +169,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         	  ne->RemoveBiologyModule(this);
         	}
           // if neurite is back to higher concentration
-        	if (ne->GetBeyondThreshold() && concentration>0.02) {
+        	if (ne->GetBeyondThreshold() && concentration > 0.02) {
         		ne->SetBeyondThreshold(false);
         		ne->SetHasToRetract(false);
         	}
