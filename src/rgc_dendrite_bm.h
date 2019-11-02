@@ -88,6 +88,13 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           bifurc_proba = 0.0095 * ne->GetDiameter();
           prefered_dir = {0.06, 0.06, 0};
         }
+        if (cell_type == 205) {
+          shrinkage = 0.00068;
+          randomness_weight = 0.8;
+          homotypic_competition = false;
+          bifurc_proba = 0.0115 * ne->GetDiameter();
+          prefered_dir = {0.05, 0.05, 0};
+        }
 
         if (cell_type/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());

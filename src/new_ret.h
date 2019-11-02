@@ -64,7 +64,8 @@ inline int Simulate(int argc, const char** argv) {
   // CellCreator(param->min_bound_, param->max_bound_, 31, 3);
   // CellCreator(param->min_bound_, param->max_bound_, 62, 5);
   // CellCreator(param->min_bound_, param->max_bound_, 50, 203);
-  CellCreator(param->min_bound_, param->max_bound_, 87, 204);
+  // CellCreator(param->min_bound_, param->max_bound_, 87, 204);
+  CellCreator(param->min_bound_, param->max_bound_, 20, 205);
   CellCreator(param->min_bound_, param->max_bound_, 0, 101);
   CellCreator(param->min_bound_, param->max_bound_, 0, 201);
 
