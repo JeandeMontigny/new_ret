@@ -297,7 +297,7 @@ namespace bdm {
           if (cell_type == 0 || cell_type == 1
             || cell_type == 2 || cell_type == 3) {
             // dendrite_nb = RandomPoisson(4.7);
-            double L = exp(-4.45);
+            double L = exp(-4.7);
             int k = 0;
             double p = 1;
             do {
@@ -306,8 +306,8 @@ namespace bdm {
               p = p * u;
             } while (p > L);
             dendrite_nb = k - 1;
-            if (dendrite_nb < 4) { dendrite_nb = 4; }
-            else if (dendrite_nb > 7) { dendrite_nb = 5; }
+            if (dendrite_nb < 3) { dendrite_nb = 3; }
+            else if (dendrite_nb > 6) { dendrite_nb = 3; }
           }
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(3, 6);
