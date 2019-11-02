@@ -45,6 +45,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 
         int cell_type = ne->GetMySoma()->GetCellType();
         Double3 gradient_guide;
+        Double3 prefered_dir = {0, 0, 0};
         double concentration = 0;
         double on_off_factor = 1;
         bool homotypic_competition = true;
@@ -60,10 +61,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
         || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
           on_off_factor = 3;
-          randomness_weight = 0.8;
           shrinkage = 0.0004;
+          randomness_weight = 0.8;
           homotypic_competition = false;
-          bifurc_proba = 0.0058 * ne->GetDiameter(); // 66 -> 230
+          bifurc_proba = 0.0058 * ne->GetDiameter();
         }
         if (cell_type == 5) {
           shrinkage = 0.000682;
@@ -72,6 +73,13 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           bifurc_proba = 0.0127 * ne->GetDiameter();
           bifurc_threshold = 0.038;
           diam_retract_threshold = 0.8;
+        }
+        if (cell_type == 203) {
+          shrinkage = 0.000426;
+          randomness_weight = 0.8;
+          homotypic_competition = false;
+          bifurc_proba = 0.00583 * ne->GetDiameter();
+          prefered_dir = {0.06, 0.06, 0};
         }
 
         if (cell_type/100 == 0) {
@@ -105,7 +113,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           auto grad_direction = gradient_guide * gradient_weight;
           auto random_direction = random_axis * randomness_weight;
           Double3 new_step_direction =
-            old_direction + grad_direction + random_direction;
+            old_direction + grad_direction + random_direction + prefered_dir;
 
           ne->ElongateTerminalEnd(25, new_step_direction);
           ne->SetDiameter(ne->GetDiameter() - shrinkage);
