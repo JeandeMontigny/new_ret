@@ -355,8 +355,8 @@ namespace bdm {
 
         dg->GetGradient(position, &gradient);
         concentration = dg->GetConcentration(position);
-        if (position[2]>27) {gradient_z={0, 0, -0.01};}
-        else {gradient_z={0, 0, 0.01};}
+        if (position[2]>27) {gradient_z={0, 0, -0.02};}
+        else {gradient_z={0, 0, 0.02};}
         diff_gradient = gradient * -0.1; diff_gradient[2] = 0;
 
         /* -- cell growth -- */

@@ -21,7 +21,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2240; // 2080 = 13 days - 160 steps per day
+  int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 8600;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -37,7 +37,7 @@ inline int Simulate(int argc, const char** argv) {
     // Create an artificial bounds for the simulation space
     param->bound_space_ = true;
     param->min_bound_ = 0;
-    param->max_bound_ = cube_dim + 20;
+    param->max_bound_ = cube_dim + 100;
     param->run_mechanical_interactions_ = true;
   };
 
@@ -51,7 +51,7 @@ inline int Simulate(int argc, const char** argv) {
   auto* random = simulation.GetRandom();
 
   int my_seed = rand() % 10000;
-  // my_seed = 9408;
+  // my_seed = 56;
   random->SetSeed(my_seed);
   cout << "Start simulation with " << cell_density
        << " cells/mm^2 using seed " << my_seed << endl;
