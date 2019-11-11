@@ -195,7 +195,26 @@ namespace bdm {
   }  // end GetRi
 
 
-  inline vector<array<double, 2>> GetAllRI() {
+  inline int GetCellTypePopulation(int cell_type) {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    int number_of_cells = 0;
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+        auto this_cell_type = cell->GetCellType();
+        // if type is not -1 and not in list
+	if (this_cell_type == cell_type) {
+	  number_of_cells++;
+	}
+      }
+    });  // end for cell in simulation
+
+    return number_of_cells;
+  }
+
+
+  inline vector<array<double, 3>> GetAllRI() {
     auto* sim = Simulation::GetActive();
     auto* rm = sim->GetResourceManager();
     vector<double> types_list;
@@ -209,9 +228,9 @@ namespace bdm {
         }
       }
     });  // end for cell in simulation
-    vector<array<double, 2>> listRi;
+    vector<array<double, 3>> listRi;
     for (unsigned int i = 0; i < types_list.size(); i++) {
-      listRi.push_back({GetRi(types_list[i]), types_list[i]});
+      listRi.push_back({GetRi(types_list[i]), types_list[i], GetCellTypePopulation(types_list[i])});
     }
     return listRi;
   }

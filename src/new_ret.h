@@ -191,12 +191,14 @@ inline int Simulate(int argc, const char** argv) {
         int current_step = 16+(16*repet)+(160*i);
 
         if (write_ri) {
-          vector<array<double, 2>> all_ri = GetAllRI();
+          vector<array<double, 3>> all_ri = GetAllRI();
           double death_rate = GetDeathRate(num_cells);
           for (unsigned int ri_i = 0; ri_i < all_ri.size(); ri_i++) {
             // step ri type death
             output_ri << current_step << " " << all_ri[ri_i][0]
-                      << " " << all_ri[ri_i][1] << " " << death_rate << "\n";
+                      << " " << all_ri[ri_i][1]
+	              << " " << all_ri[ri_i][2]
+		      << " " << death_rate << "\n";
           }
         }
         if (write_positions) {
@@ -212,7 +214,7 @@ inline int Simulate(int argc, const char** argv) {
       scheduler->Simulate(160);
     }
 
-   vector<array<double, 2>> all_ri = GetAllRI();
+   vector<array<double, 3>> all_ri = GetAllRI();
    double mean_ri = 0;
    for (unsigned int i = 0; i < all_ri.size(); i++) {
      mean_ri += all_ri[i][0];
