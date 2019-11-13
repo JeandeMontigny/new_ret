@@ -29,7 +29,7 @@ inline int Simulate(int argc, const char** argv) {
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 385; // 8600
+  int cell_density = 192; // 8600
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
   
@@ -63,7 +63,7 @@ inline int Simulate(int argc, const char** argv) {
 
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  CellCreator(param->min_bound_, param->max_bound_, 385, 5);
+  CellCreator(param->min_bound_, param->max_bound_, 192, 1);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   /*
@@ -71,18 +71,18 @@ inline int Simulate(int argc, const char** argv) {
   // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
   ModelInitializer::DefineSubstance(dg_000_, "on-off_dsgca", diffusion_coef,
     decay_const, param->max_bound_/4);
+*/
   ModelInitializer::DefineSubstance(dg_001_, "on-off_dsgcb", diffusion_coef,
     decay_const, param->max_bound_/4);
+  /*
   ModelInitializer::DefineSubstance(dg_002_, "on-off_dsgcc", diffusion_coef,
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_003_, "on-off_dsgcd", diffusion_coef,
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_004_, "on-off_m3", diffusion_coef,
     decay_const, param->max_bound_/4);
-*/
   ModelInitializer::DefineSubstance(dg_005_, "on-off_led", diffusion_coef,
     decay_const, resolution);
-  /*
   ModelInitializer::DefineSubstance(dg_006_, "on-off_u", diffusion_coef,
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_007_, "on-off_v", diffusion_coef,

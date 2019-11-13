@@ -134,22 +134,22 @@ namespace bdm {
         if (cell_type == 0) {
           dg = rm->GetDiffusionGrid("on-off_dsgca");
           movement_threshold = 1.717;
-          death_threshold = 1.776;
+          death_threshold = 1.9974;
         }
         else if (cell_type == 1) {
           dg = rm->GetDiffusionGrid("on-off_dsgcb");
           movement_threshold = 1.717;
-          death_threshold = 1.776;
+          death_threshold = 1.9974;
         }
         else if (cell_type == 2) {
           dg = rm->GetDiffusionGrid("on-off_dsgcc");
           movement_threshold = 1.717;
-          death_threshold = 1.776;
+          death_threshold = 1.9974;
         }
         else if (cell_type == 3) {
           dg = rm->GetDiffusionGrid("on-off_dsgcd");
           movement_threshold = 1.717;
-          death_threshold = 1.776;
+          death_threshold = 1.9974;
         }
         else if (cell_type == 4) {
           dg = rm->GetDiffusionGrid("on-off_m3");
@@ -159,7 +159,7 @@ namespace bdm {
         else if (cell_type == 5) {
           dg = rm->GetDiffusionGrid("on-off_led");
           movement_threshold = 1.735;
-          death_threshold = 2.019; // 1.77
+          death_threshold = 2.019;
         }
         else if (cell_type == 6) {
           dg = rm->GetDiffusionGrid("on-off_u");
