@@ -29,7 +29,7 @@ inline int Simulate(int argc, const char** argv) {
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 539; // 8600
+  int cell_density = 114; // 8600
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
   
@@ -62,11 +62,10 @@ inline int Simulate(int argc, const char** argv) {
        << " cells/mm^2 using seed " << my_seed << endl;
 
   // create cells
-  // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  CellCreator(param->min_bound_, param->max_bound_, 539, 204);
-
-  // Order: substance_name, diffusion_coefficient, decay_constant, resolution
+  //  CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 10);
   /*
+  // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   // on-off
   // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
   ModelInitializer::DefineSubstance(dg_000_, "on-off_dsgca", diffusion_coef,
@@ -89,8 +88,10 @@ inline int Simulate(int argc, const char** argv) {
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_009_, "on-off_x", diffusion_coef,
     decay_const, param->max_bound_/4);
+  */
   ModelInitializer::DefineSubstance(dg_010_, "on-off_y", diffusion_coef,
     decay_const, param->max_bound_/4);
+  /*
   ModelInitializer::DefineSubstance(dg_011_, "on-off_z", diffusion_coef,
     decay_const, param->max_bound_/4);
   // on
@@ -143,10 +144,8 @@ inline int Simulate(int argc, const char** argv) {
     param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const,
     param->max_bound_/4);
-  */
   ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef,
     decay_const, param->max_bound_/4);
-  /*
   ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef,
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const,
