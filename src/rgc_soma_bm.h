@@ -154,7 +154,7 @@ namespace bdm {
         else if (cell_type == 4) {
           dg = rm->GetDiffusionGrid("on-off_m3");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 5) {
           dg = rm->GetDiffusionGrid("on-off_led");
@@ -164,12 +164,12 @@ namespace bdm {
         else if (cell_type == 6) {
           dg = rm->GetDiffusionGrid("on-off_u");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 7) {
           dg = rm->GetDiffusionGrid("on-off_v");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 8) {
           dg = rm->GetDiffusionGrid("on-off_w");
@@ -220,12 +220,12 @@ namespace bdm {
         else if (cell_type == 105) {
           dg = rm->GetDiffusionGrid("on_m4");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 106) {
           dg = rm->GetDiffusionGrid("on_m5");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 107) {
           dg = rm->GetDiffusionGrid("on_o");
@@ -275,17 +275,17 @@ namespace bdm {
         else if (cell_type == 116) {
           dg = rm->GetDiffusionGrid("on_x");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 117) {
           dg = rm->GetDiffusionGrid("on_y");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 118) {
           dg = rm->GetDiffusionGrid("on_z");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         // off
         else if (cell_type == 200) {
@@ -321,12 +321,12 @@ namespace bdm {
         else if (cell_type == 206) {
           dg = rm->GetDiffusionGrid("off_u");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 207) {
           dg = rm->GetDiffusionGrid("off_v");
           movement_threshold = 1.7;
-          death_threshold = 1.78;
+          death_threshold = 1.9841;
         }
         else if (cell_type == 208) {
           dg = rm->GetDiffusionGrid("off_w");
