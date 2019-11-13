@@ -37,7 +37,7 @@ namespace bdm {
         Double3 gradient, diff_gradient, gradient_z;
         DiffusionGrid* dg = nullptr;
 
-        bool with_movement = true;
+        bool with_movement = false;
         double movement_threshold = 1.735;
         bool with_death = true;
         double death_threshold = 1.76;
@@ -159,7 +159,7 @@ namespace bdm {
         else if (cell_type == 5) {
           dg = rm->GetDiffusionGrid("on-off_led");
           movement_threshold = 1.735;
-          death_threshold = 1.64825; // 1.77
+          death_threshold = 2.05; // 1.77
         }
         else if (cell_type == 6) {
           dg = rm->GetDiffusionGrid("on-off_u");
@@ -392,7 +392,7 @@ namespace bdm {
           if (with_death && cell_clock >= 200 && cell_clock < 1060
             && cell_clock%4==0) {
 	    // add vertical migration as the multi layer colapse in just on layer
-	    cell->UpdatePosition(gradient_z);
+	    cell->UpdatePosition(gradient_z);    
 	    // cell death depending on homotype substance concentration
 	    if (concentration > death_threshold
 		&& random->Uniform(0, 1) < 0.1) { // 0.25

@@ -53,7 +53,7 @@ inline int Simulate(int argc, const char** argv) {
   int resolution = param->max_bound_/grid_spacing;
   // ratio diffusion_coef/spacing/spacing = 0.125
   double diffusion_coef = 0.125*grid_spacing*grid_spacing;
-  double decay_const = 0.015625*grid_spacing;
+  double decay_const = 0; // 0.015625*grid_spacing;
 
   int my_seed = rand() % 10000;
   // my_seed = 56;
