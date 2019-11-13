@@ -159,7 +159,7 @@ namespace bdm {
         else if (cell_type == 5) {
           dg = rm->GetDiffusionGrid("on-off_led");
           movement_threshold = 1.735;
-          death_threshold = 1.766;
+          death_threshold = 1.64825; // 1.77
         }
         else if (cell_type == 6) {
           dg = rm->GetDiffusionGrid("on-off_u");
@@ -373,7 +373,7 @@ namespace bdm {
             cell->UpdatePosition(gradient_z);
           }
         } // end cell growth
-
+	
         /* -- cell movement -- */
         if (with_movement && cell_clock >= 200 && cell_clock < 2020
           && concentration >= movement_threshold && cell_clock%3==0) {
@@ -391,22 +391,22 @@ namespace bdm {
           /* -- cell death -- */
           if (with_death && cell_clock >= 200 && cell_clock < 1060
             && cell_clock%4==0) {
-              // add vertical migration as the multi layer colapse in just on layer
-              cell->UpdatePosition(gradient_z);
-              // cell death depending on homotype substance concentration
-              if (concentration > death_threshold
-                  && random->Uniform(0, 1) < 0.1) { // 0.25
-                cell->RemoveFromSimulation();
-              }
-            } // end cell death
-
+	    // add vertical migration as the multi layer colapse in just on layer
+	    cell->UpdatePosition(gradient_z);
+	    // cell death depending on homotype substance concentration
+	    if (concentration > death_threshold
+		&& random->Uniform(0, 1) < 0.1) { // 0.25
+	      cell->RemoveFromSimulation();
+	    }
+	  } // end cell death
+	  
             // remove RGC_mosaic_BM when mosaics are over
-            if (cell->GetInternalClock() > 2020) {
-              cell->RemoveBiologyModule(this);
-            }
-
-          } // end if MyCell
-        } // end Run()
+	  if (cell->GetInternalClock() > 2020) {
+	    cell->RemoveBiologyModule(this);
+	  }
+	  
+      } // end if MyCell
+    } // end Run()
   }; // end biologyModule RGC_mosaic_BM
 
 
@@ -560,10 +560,8 @@ namespace bdm {
           cout << "error: no valid cell type" << endl;
         }
 
-        if (cell->GetInternalClock()%3==0) {
-          auto& secretion_position = cell->GetPosition();
-          dg->IncreaseConcentrationBy(secretion_position, 1);
-        }
+	auto& secretion_position = cell->GetPosition();
+	dg->IncreaseConcentrationBy(secretion_position, 1);
 
         // remove Substance_secretion_BM when mosaics are over
         if (cell->GetInternalClock() > 2020) {

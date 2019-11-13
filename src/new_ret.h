@@ -21,23 +21,23 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 2240; // 2240 = 13 days - 160 steps per day
-  int cube_dim = 1000; // 1000
-  int cell_density = 8600;
-  int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
-  double diffusion_coef = 0.5;
-  double decay_const = 0.1;
 
   bool write_ri = true;
   bool write_positions = true;
   bool write_swc = false;
   bool clean_result_dir = true;
 
+  int max_step = 2240; // 2240 = 13 days - 160 steps per day
+  int cube_dim = 1000; // 1000
+  int cell_density = 385; // 8600
+  int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
+  int grid_spacing = 4;
+  
   auto set_param = [&](Param* param) {
     // Create an artificial bounds for the simulation space
     param->bound_space_ = true;
     param->min_bound_ = 0;
-    param->max_bound_ = cube_dim + 100;
+    param->max_bound_ = cube_dim + 300;
     param->run_mechanical_interactions_ = true;
   };
 
@@ -50,6 +50,11 @@ inline int Simulate(int argc, const char** argv) {
   auto* param = simulation.GetParam();
   auto* random = simulation.GetRandom();
 
+  int resolution = param->max_bound_/grid_spacing;
+  // ratio diffusion_coef/spacing/spacing = 0.125
+  double diffusion_coef = 0.125*grid_spacing*grid_spacing;
+  double decay_const = 0.015625*grid_spacing;
+
   int my_seed = rand() % 10000;
   // my_seed = 56;
   random->SetSeed(my_seed);
@@ -57,10 +62,11 @@ inline int Simulate(int argc, const char** argv) {
        << " cells/mm^2 using seed " << my_seed << endl;
 
   // create cells
-  CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+  // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+  CellCreator(param->min_bound_, param->max_bound_, 385, 5);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
-
+  /*
   // on-off
   // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
   ModelInitializer::DefineSubstance(dg_000_, "on-off_dsgca", diffusion_coef,
@@ -73,8 +79,10 @@ inline int Simulate(int argc, const char** argv) {
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_004_, "on-off_m3", diffusion_coef,
     decay_const, param->max_bound_/4);
+*/
   ModelInitializer::DefineSubstance(dg_005_, "on-off_led", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
+  /*
   ModelInitializer::DefineSubstance(dg_006_, "on-off_u", diffusion_coef,
     decay_const, param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_007_, "on-off_v", diffusion_coef,
@@ -153,7 +161,7 @@ inline int Simulate(int argc, const char** argv) {
     param->max_bound_/4);
   ModelInitializer::DefineSubstance(dg_211_, "off_z", diffusion_coef, decay_const,
     param->max_bound_/4);
-
+  */
   cout << "Cells created and substances initialised" << endl;
 
   // prepare export
