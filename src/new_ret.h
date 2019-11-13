@@ -32,7 +32,7 @@ inline int Simulate(int argc, const char** argv) {
   int cell_density = 8600; // 8600
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
-  
+
   auto set_param = [&](Param* param) {
     // Create an artificial bounds for the simulation space
     param->bound_space_ = true;
@@ -53,7 +53,7 @@ inline int Simulate(int argc, const char** argv) {
   int resolution = param->max_bound_/grid_spacing;
   // ratio diffusion_coef/spacing/spacing = 0.125
   double diffusion_coef = 0.125*grid_spacing*grid_spacing;
-  double decay_const = 0; // 0.015625*grid_spacing;
+  double decay_const = 0;
 
   int my_seed = rand() % 10000;
   // my_seed = 56;
