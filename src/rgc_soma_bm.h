@@ -174,7 +174,7 @@ namespace bdm {
         else if (cell_type == 8) {
           dg = rm->GetDiffusionGrid("on-off_w");
           movement_threshold = 1.708;
-          death_threshold = 1.782;
+          death_threshold = 1.988;
         }
         else if (cell_type == 9) {
           dg = rm->GetDiffusionGrid("on-off_x");
@@ -215,7 +215,7 @@ namespace bdm {
         else if (cell_type == 104) {
           dg = rm->GetDiffusionGrid("on_m2");
           movement_threshold = 1.705;
-          death_threshold = 1.785;
+          death_threshold = 1.988;
         }
         else if (cell_type == 105) {
           dg = rm->GetDiffusionGrid("on_m4");
@@ -230,32 +230,32 @@ namespace bdm {
         else if (cell_type == 107) {
           dg = rm->GetDiffusionGrid("on_o");
           movement_threshold = 1.72;
-          death_threshold = 1.774;
+          death_threshold = 1.9988;
         }
         else if (cell_type == 108) {
           dg = rm->GetDiffusionGrid("on_p");
           movement_threshold = 1.714;
-          death_threshold = 1.778;
+          death_threshold = 1.994;
         }
         else if (cell_type == 109) {
           dg = rm->GetDiffusionGrid("on_q");
           movement_threshold = 1.714;
-          death_threshold = 1.778;
+          death_threshold = 1.994;
         }
         else if (cell_type == 110) {
           dg = rm->GetDiffusionGrid("on_r");
           movement_threshold = 1.711;
-          death_threshold = 1.779;
+          death_threshold = 1.989;
         }
         else if (cell_type == 111) {
           dg = rm->GetDiffusionGrid("on_s");
           movement_threshold = 1.708;
-          death_threshold = 1.782;
+          death_threshold = 1.988;
         }
         else if (cell_type == 112) {
           dg = rm->GetDiffusionGrid("on_t");
           movement_threshold = 1.708;
-          death_threshold = 1.782;
+          death_threshold = 1.988;
         }
         else if (cell_type == 113) {
           dg = rm->GetDiffusionGrid("on_u");
@@ -270,7 +270,7 @@ namespace bdm {
         else if (cell_type == 115) {
           dg = rm->GetDiffusionGrid("on_w");
           movement_threshold = 1.7;
-          death_threshold = 1.79;
+          death_threshold = 1.985;
         }
         else if (cell_type == 116) {
           dg = rm->GetDiffusionGrid("on_x");
@@ -301,22 +301,22 @@ namespace bdm {
         else if (cell_type == 202) {
           dg = rm->GetDiffusionGrid("off_m1");
           movement_threshold = 1.709;
-          death_threshold = 1.78;
+          death_threshold = 1.988;
         }
         else if (cell_type == 203) {
           dg = rm->GetDiffusionGrid("off_j");
           movement_threshold = 1.726;
-          death_threshold = 1.772;
+          death_threshold = 2.01;
         }
         else if (cell_type == 204) {
           dg = rm->GetDiffusionGrid("off_mini_j");
           movement_threshold = 1.744;
-          death_threshold = 1.765;
+          death_threshold = 2.042;
         }
         else if (cell_type == 205) {
           dg = rm->GetDiffusionGrid("off_midi_j");
           movement_threshold = 1.71;
-          death_threshold = 1.779;
+          death_threshold = 1.989;
         }
         else if (cell_type == 206) {
           dg = rm->GetDiffusionGrid("off_u");
@@ -331,7 +331,7 @@ namespace bdm {
         else if (cell_type == 208) {
           dg = rm->GetDiffusionGrid("off_w");
           movement_threshold = 1.708;
-          death_threshold = 1.782;
+          death_threshold = 1.988;
         }
         else if (cell_type == 209) {
           dg = rm->GetDiffusionGrid("off_x");
@@ -346,7 +346,7 @@ namespace bdm {
         else if (cell_type == 211) {
           dg = rm->GetDiffusionGrid("off_z");
           movement_threshold = 1.701;
-          death_threshold = 1.789;
+          death_threshold = 1.985;
         }
         else {
           cout << "error: no valid cell type" << endl;
