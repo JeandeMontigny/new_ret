@@ -94,69 +94,69 @@ inline int Simulate(int argc, const char** argv) {
   // on
   // 40, 40, 40, 40, 56, 20, 20, 150, 100, 100, 80, 60, 60, 50, 50, 34, 20, 20, 20
   ModelInitializer::DefineSubstance(dg_100_, "on_dsgca", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_101_, "on_dsgcb", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_102_, "on_dsgcc", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_103_, "on_aplha", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_104_, "on_m2", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_105_, "on_m4", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_106_, "on_m5", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_107_, "on_o", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_108_, "on_p", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_109_, "on_q", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_110_, "on_r", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_111_, "on_s", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_112_, "on_t", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_113_, "on_u", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_114_, "on_v", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_115_, "on_w", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_116_, "on_x", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_117_, "on_y", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_118_, "on_z", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   // off
   // 40, 40, 63, 200, 350, 80, 20, 20, 60, 50, 40, 37
   ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef,
-    decay_const, param->max_bound_/4);
+    decay_const, resolution);
   ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_207_, "off_v", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_208_, "off_w", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_209_, "off_x", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_210_, "off_y", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
   ModelInitializer::DefineSubstance(dg_211_, "off_z", diffusion_coef, decay_const,
-    param->max_bound_/4);
+    resolution);
 
   cout << "Cells created and substances initialised" << endl;
 

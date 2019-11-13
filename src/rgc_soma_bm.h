@@ -140,17 +140,17 @@ namespace bdm {
         else if (cell_type == 1) {
           dg = rm->GetDiffusionGrid("on-off_dsgcb");
           movement_threshold = 1.717;
-          death_threshold = 2.017;
+          if (!with_movement) { death_threshold = 2.017; }
         }
         else if (cell_type == 2) {
           dg = rm->GetDiffusionGrid("on-off_dsgcc");
           movement_threshold = 1.717;
-          death_threshold = 2.017;
+          if (!with_movement) { death_threshold = 2.017; }
         }
         else if (cell_type == 3) {
           dg = rm->GetDiffusionGrid("on-off_dsgcd");
           movement_threshold = 1.717;
-          death_threshold = 2.017;
+          if (!with_movement) { death_threshold = 2.017; }
         }
         else if (cell_type == 4) {
           dg = rm->GetDiffusionGrid("on-off_m3");
