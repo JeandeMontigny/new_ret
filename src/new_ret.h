@@ -65,7 +65,13 @@ inline int Simulate(int argc, const char** argv) {
   // CellCreator(param->min_bound_, param->max_bound_, 62, 5);
   // CellCreator(param->min_bound_, param->max_bound_, 50, 203);
   // CellCreator(param->min_bound_, param->max_bound_, 87, 204);
-  CellCreator(param->min_bound_, param->max_bound_, 20, 205);
+  // CellCreator(param->min_bound_, param->max_bound_, 20, 205);
+
+  // nb root: 4.02 - std: 1.14
+  // diameter: 142.36 - std: 30.08
+  // branchin nb: 117.3 - std: 75.98
+  // aniso: 0.46 - std: 0.22
+
   CellCreator(param->min_bound_, param->max_bound_, 0, 101);
   CellCreator(param->min_bound_, param->max_bound_, 0, 201);
 
