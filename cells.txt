@@ -5,7 +5,7 @@ cell_type   name   final_density    start_density   death_alone_threshold   fate
 2       on-off_dsgcc    125         357             2.0367
 3       on-off_dsgcd    125         357             2.0367
 4       on-off_m3       20          57              1.9872
-5       on-off_led      250         714             
+5       on-off_led      250         714             2.116
 6       on-off_u        20          57              1.9872
 7       on-off_v        20          57              1.9872
 8       on-off_w        60          171             2.001
@@ -17,32 +17,32 @@ cell_type   name   final_density    start_density   death_alone_threshold   fate
 101     on_dsgcb        40          114             1.994
 102     on_dsgcc        40          114             1.994
 103     on_aplha        40          114             1.994
-104     on_m2           56          160             
+104     on_m2           56          160             2.0
 105     on_m4           20          57              1.9872
 106     on_m5           20          57              1.9872
-107     on_o            150         428             
-108     on_p            100         286             
-109     on_q            100         286             
+107     on_o            150         428             2.05
+108     on_p            100         286             2.022
+109     on_q            100         286             2.022
 110     on_r            80          228             2.011
 111     on_s            60          171             2.001
 112     on_t            60          171             2.001
 113     on_u            50          143             1.9968
 114     on_v            50          143             1.9968
-115     on_w            34          97              
+115     on_w            34          97              1.993
 116     on_x            20          57              1.9872
 117     on_y            20          57              1.9872
 118     on_z            20          57              1.9872
 
 200     off_aplhaa      40          114             1.994
 201     off_aplhab      40          114             1.994
-202     off_m1          63          180             
-203     off_j           200         571             
-204     off_mini_j      350         1000            
+202     off_m1          63          180             2.006
+203     off_j           200         571             2.078
+204     off_mini_j      350         1000            2.179
 205     off_midi_j      80          228             2.011
 206     off_u           20          57              1.9872
 207     off_v           20          57              1.9872
 208     off_w           60          171             2.001
 209     off_x           50          143             1.9968
 210     off_y           40          114             1.994
-211     off_z           37          106             
+211     off_z           37          106             1.9935
 
