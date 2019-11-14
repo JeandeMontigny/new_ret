@@ -61,8 +61,55 @@ inline int Simulate(int argc, const char** argv) {
   cout << "Start simulation with " << cell_density
        << " cells/mm^2 using seed " << my_seed << endl;
 
-  // create cells
-  CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+  // with cell fate
+  // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+
+  // without cell fate
+  CellCreator(param->min_bound_, param->max_bound_, 357, 0);
+  CellCreator(param->min_bound_, param->max_bound_, 357, 1);
+  CellCreator(param->min_bound_, param->max_bound_, 357, 2);
+  CellCreator(param->min_bound_, param->max_bound_, 357, 3);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 4);
+  CellCreator(param->min_bound_, param->max_bound_, 714, 5);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 6);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 7);
+  CellCreator(param->min_bound_, param->max_bound_, 171, 8);
+  CellCreator(param->min_bound_, param->max_bound_, 143, 9);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 10);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 11);
+
+  CellCreator(param->min_bound_, param->max_bound_, 114, 100);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 101);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 102);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 103);
+  CellCreator(param->min_bound_, param->max_bound_, 160, 104);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 105);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 106);
+  CellCreator(param->min_bound_, param->max_bound_, 428, 107);
+  CellCreator(param->min_bound_, param->max_bound_, 286, 108);
+  CellCreator(param->min_bound_, param->max_bound_, 286, 109);
+  CellCreator(param->min_bound_, param->max_bound_, 228, 110);
+  CellCreator(param->min_bound_, param->max_bound_, 171, 111);
+  CellCreator(param->min_bound_, param->max_bound_, 171, 112);
+  CellCreator(param->min_bound_, param->max_bound_, 143, 113);
+  CellCreator(param->min_bound_, param->max_bound_, 143, 114);
+  CellCreator(param->min_bound_, param->max_bound_, 97, 115);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 116);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 117);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 118);
+
+  CellCreator(param->min_bound_, param->max_bound_, 114, 200);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 201);
+  CellCreator(param->min_bound_, param->max_bound_, 180, 202);
+  CellCreator(param->min_bound_, param->max_bound_, 571, 203);
+  CellCreator(param->min_bound_, param->max_bound_, 1000, 204);
+  CellCreator(param->min_bound_, param->max_bound_, 228, 205);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 206);
+  CellCreator(param->min_bound_, param->max_bound_, 57, 207);
+  CellCreator(param->min_bound_, param->max_bound_, 171, 208);
+  CellCreator(param->min_bound_, param->max_bound_, 143, 209);
+  CellCreator(param->min_bound_, param->max_bound_, 114, 210);
+  CellCreator(param->min_bound_, param->max_bound_, 106, 211);
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   // on-off
