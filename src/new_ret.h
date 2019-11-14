@@ -29,7 +29,7 @@ inline int Simulate(int argc, const char** argv) {
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 8600; // 8600
+  int cell_density = 286; // 8600
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
 
@@ -63,7 +63,7 @@ inline int Simulate(int argc, const char** argv) {
 
   // with cell fate
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-
+/*
   // without cell fate
   CellCreator(param->min_bound_, param->max_bound_, 357, 0);
   CellCreator(param->min_bound_, param->max_bound_, 357, 1);
@@ -77,7 +77,6 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, 143, 9);
   CellCreator(param->min_bound_, param->max_bound_, 114, 10);
   CellCreator(param->min_bound_, param->max_bound_, 114, 11);
-
   CellCreator(param->min_bound_, param->max_bound_, 114, 100);
   CellCreator(param->min_bound_, param->max_bound_, 114, 101);
   CellCreator(param->min_bound_, param->max_bound_, 114, 102);
@@ -86,7 +85,9 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, 57, 105);
   CellCreator(param->min_bound_, param->max_bound_, 57, 106);
   CellCreator(param->min_bound_, param->max_bound_, 428, 107);
+  */
   CellCreator(param->min_bound_, param->max_bound_, 286, 108);
+  /*
   CellCreator(param->min_bound_, param->max_bound_, 286, 109);
   CellCreator(param->min_bound_, param->max_bound_, 228, 110);
   CellCreator(param->min_bound_, param->max_bound_, 171, 111);
@@ -110,7 +111,8 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, 143, 209);
   CellCreator(param->min_bound_, param->max_bound_, 114, 210);
   CellCreator(param->min_bound_, param->max_bound_, 106, 211);
-
+  */
+/*
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   // on-off
   // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
@@ -156,8 +158,10 @@ inline int Simulate(int argc, const char** argv) {
     resolution);
   ModelInitializer::DefineSubstance(dg_107_, "on_o", diffusion_coef, decay_const,
     resolution);
+    */
   ModelInitializer::DefineSubstance(dg_108_, "on_p", diffusion_coef, decay_const,
     resolution);
+    /*
   ModelInitializer::DefineSubstance(dg_109_, "on_q", diffusion_coef, decay_const,
     resolution);
   ModelInitializer::DefineSubstance(dg_110_, "on_r", diffusion_coef, decay_const,
@@ -204,6 +208,7 @@ inline int Simulate(int argc, const char** argv) {
     resolution);
   ModelInitializer::DefineSubstance(dg_211_, "off_z", diffusion_coef, decay_const,
     resolution);
+  */
 
   cout << "Cells created and substances initialised" << endl;
 

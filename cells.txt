@@ -1,48 +1,48 @@
-cell_type   name   final_density    start_density   death_alone_threshold   death_threshold     move_threshold
+cell_type   name   final_density    start_density   death_alone_threshold   fate_death   all_death     all_move
 
-0       on-off_dsgca    125         357             2.017
-1       on-off_dsgcb    125         357             2.017           
-2       on-off_dsgcc    125         357             2.017
-3       on-off_dsgcd    125         357             2.017
-4       on-off_m3       20          57              1.9856
-5       on-off_led      250         714             2.064
-6       on-off_u        20          57              1.9856
-7       on-off_v        20          57              1.9856
-8       on-off_w        60          171             1.9955
-9       on-off_x        50          143             1.9926
-10      on-off_y        40          114             1.99
-11      on-off_z        40          114             1.99
+0       on-off_dsgca    125         357             2.0367
+1       on-off_dsgcb    125         357             2.0367
+2       on-off_dsgcc    125         357             2.0367
+3       on-off_dsgcd    125         357             2.0367
+4       on-off_m3       20          57              1.9872
+5       on-off_led      250         714             
+6       on-off_u        20          57              1.9872
+7       on-off_v        20          57              1.9872
+8       on-off_w        60          171             2.001
+9       on-off_x        50          143             1.9968
+10      on-off_y        40          114             1.994
+11      on-off_z        40          114             1.994
 
-100     on_dsgca        40          114             1.99
-101     on_dsgcb        40          114             1.99
-102     on_dsgcc        40          114             1.99
-103     on_aplha        40          114             1.99
-104     on_m2           56          160             1.994
-105     on_m4           20          57              1.9856
-106     on_m5           20          57              1.9856
-107     on_o            150         428             2.025
-108     on_p            100         286             2.008
-109     on_q            100         286             2.008
-110     on_r            80          228             2.0
-111     on_s            60          171             1.9955
-112     on_t            60          171             1.9955
-113     on_u            50          143             1.9926
-114     on_v            50          143             1.9926
-115     on_w            34          97              1.9876
-116     on_x            20          57              1.9856
-117     on_y            20          57              1.9856
-118     on_z            20          57              1.9856
+100     on_dsgca        40          114             1.994
+101     on_dsgcb        40          114             1.994
+102     on_dsgcc        40          114             1.994
+103     on_aplha        40          114             1.994
+104     on_m2           56          160             
+105     on_m4           20          57              1.9872
+106     on_m5           20          57              1.9872
+107     on_o            150         428             
+108     on_p            100         286             
+109     on_q            100         286             
+110     on_r            80          228             2.011
+111     on_s            60          171             2.001
+112     on_t            60          171             2.001
+113     on_u            50          143             1.9968
+114     on_v            50          143             1.9968
+115     on_w            34          97              
+116     on_x            20          57              1.9872
+117     on_y            20          57              1.9872
+118     on_z            20          57              1.9872
 
-200     off_aplhaa      40          114             1.99
-201     off_aplhab      40          114             1.99
-202     off_m1          63          180             1.9955
-203     off_j           200         571             2.044
-204     off_mini_j      350         1000            2.104
-205     off_midi_j      80          228             2.0
-206     off_u           20          57              1.9856
-207     off_v           20          57              1.9856
-208     off_w           60          171             1.9955
-209     off_x           50          143             1.9926
-210     off_y           40          114             1.99
-211     off_z           37          106             1.9878
+200     off_aplhaa      40          114             1.994
+201     off_aplhab      40          114             1.994
+202     off_m1          63          180             
+203     off_j           200         571             
+204     off_mini_j      350         1000            
+205     off_midi_j      80          228             2.011
+206     off_u           20          57              1.9872
+207     off_v           20          57              1.9872
+208     off_w           60          171             2.001
+209     off_x           50          143             1.9968
+210     off_y           40          114             1.994
+211     off_z           37          106             
 
