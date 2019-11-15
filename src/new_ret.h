@@ -21,6 +21,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
+  bool cell_fate = false;
 
   bool write_ri = true;
   bool write_positions = true;
@@ -29,7 +30,7 @@ inline int Simulate(int argc, const char** argv) {
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 8600 ; // 8600
+  int cell_density = 8600 ; // 8600 - 65% ~= 3000
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
 
@@ -62,54 +63,60 @@ inline int Simulate(int argc, const char** argv) {
        << " cells/mm^2 using seed " << my_seed << endl;
 
   // with cell fate
-  // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-  
+  if (cell_fate) {
+    CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
+  }
   // without cell fate
-  CellCreator(param->min_bound_, param->max_bound_, 357, 0);
-  CellCreator(param->min_bound_, param->max_bound_, 357, 1);
-  CellCreator(param->min_bound_, param->max_bound_, 357, 2);
-  CellCreator(param->min_bound_, param->max_bound_, 357, 3);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 4);
-  CellCreator(param->min_bound_, param->max_bound_, 714, 5);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 6);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 7);
-  CellCreator(param->min_bound_, param->max_bound_, 171, 8);
-  CellCreator(param->min_bound_, param->max_bound_, 143, 9);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 10);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 11);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 100);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 101);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 102);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 103);
-  CellCreator(param->min_bound_, param->max_bound_, 160, 104);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 105);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 106);
-  CellCreator(param->min_bound_, param->max_bound_, 428, 107);
-  CellCreator(param->min_bound_, param->max_bound_, 286, 108);
-  CellCreator(param->min_bound_, param->max_bound_, 286, 109);
-  CellCreator(param->min_bound_, param->max_bound_, 228, 110);
-  CellCreator(param->min_bound_, param->max_bound_, 171, 111);
-  CellCreator(param->min_bound_, param->max_bound_, 171, 112);
-  CellCreator(param->min_bound_, param->max_bound_, 143, 113);
-  CellCreator(param->min_bound_, param->max_bound_, 143, 114);
-  CellCreator(param->min_bound_, param->max_bound_, 97, 115);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 116);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 117);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 118);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 200);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 201);
-  CellCreator(param->min_bound_, param->max_bound_, 180, 202);
-  CellCreator(param->min_bound_, param->max_bound_, 571, 203);
-  CellCreator(param->min_bound_, param->max_bound_, 1000, 204);
-  CellCreator(param->min_bound_, param->max_bound_, 228, 205);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 206);
-  CellCreator(param->min_bound_, param->max_bound_, 57, 207);
-  CellCreator(param->min_bound_, param->max_bound_, 171, 208);
-  CellCreator(param->min_bound_, param->max_bound_, 143, 209);
-  CellCreator(param->min_bound_, param->max_bound_, 114, 210);
-  CellCreator(param->min_bound_, param->max_bound_, 106, 211);
-
+  else {
+    // on-off
+    CellCreator(param->min_bound_, param->max_bound_, 357, 0);
+    CellCreator(param->min_bound_, param->max_bound_, 357, 1);
+    CellCreator(param->min_bound_, param->max_bound_, 357, 2);
+    CellCreator(param->min_bound_, param->max_bound_, 357, 3);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 4);
+    CellCreator(param->min_bound_, param->max_bound_, 714, 5);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 6);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 7);
+    CellCreator(param->min_bound_, param->max_bound_, 171, 8);
+    CellCreator(param->min_bound_, param->max_bound_, 143, 9);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 10);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 11);
+    // on
+    CellCreator(param->min_bound_, param->max_bound_, 114, 100);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 101);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 102);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 103);
+    CellCreator(param->min_bound_, param->max_bound_, 160, 104);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 105);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 106);
+    CellCreator(param->min_bound_, param->max_bound_, 428, 107);
+    CellCreator(param->min_bound_, param->max_bound_, 286, 108);
+    CellCreator(param->min_bound_, param->max_bound_, 286, 109);
+    CellCreator(param->min_bound_, param->max_bound_, 228, 110);
+    CellCreator(param->min_bound_, param->max_bound_, 171, 111);
+    CellCreator(param->min_bound_, param->max_bound_, 171, 112);
+    CellCreator(param->min_bound_, param->max_bound_, 143, 113);
+    CellCreator(param->min_bound_, param->max_bound_, 143, 114);
+    CellCreator(param->min_bound_, param->max_bound_, 97, 115);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 116);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 117);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 118);
+    // off
+    CellCreator(param->min_bound_, param->max_bound_, 114, 200);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 201);
+    CellCreator(param->min_bound_, param->max_bound_, 180, 202);
+    CellCreator(param->min_bound_, param->max_bound_, 571, 203);
+    CellCreator(param->min_bound_, param->max_bound_, 1000, 204);
+    CellCreator(param->min_bound_, param->max_bound_, 228, 205);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 206);
+    CellCreator(param->min_bound_, param->max_bound_, 57, 207);
+    CellCreator(param->min_bound_, param->max_bound_, 171, 208);
+    CellCreator(param->min_bound_, param->max_bound_, 143, 209);
+    CellCreator(param->min_bound_, param->max_bound_, 114, 210);
+    CellCreator(param->min_bound_, param->max_bound_, 106, 211);
+  }
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
+
   // on-off
   // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
   ModelInitializer::DefineSubstance(dg_000_, "on-off_dsgca", diffusion_coef,
