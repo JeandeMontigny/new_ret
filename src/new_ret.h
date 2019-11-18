@@ -21,14 +21,14 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  bool cell_fate = false;
+  bool cell_fate = true;
 
   bool write_ri = true;
   bool write_positions = true;
   bool write_swc = false;
   bool clean_result_dir = true;
 
-  int max_step = 2240; // 2240 = 13 days - 160 steps per day
+  int max_step = 1985; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 8600 ; // 8600 - 65% ~= 3000
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -237,6 +237,9 @@ inline int Simulate(int argc, const char** argv) {
            << "/results"<< my_seed <<"/swc_files folder creation" << endl;
   }
 
+
+  int max_pop_list [212] = { };
+
   // Run simulation
   cout << "Simulating.." << endl;
   for (int i = 0; i < max_step/160; i++) {
@@ -255,8 +258,14 @@ inline int Simulate(int argc, const char** argv) {
                       << " " << all_ri[ri_i][1]
 	              << " " << all_ri[ri_i][2]
 		      << " " << death_rate << "\n";
+
+	    if (max_pop_list[(int)all_ri[ri_i][1]] < all_ri[ri_i][2]) {
+	      max_pop_list[(int)all_ri[ri_i][1]] = all_ri[ri_i][2];
+	    }
+
           }
         }
+
         if (write_positions) {
           WritePositions(current_step, my_seed);
         }
@@ -270,19 +279,25 @@ inline int Simulate(int argc, const char** argv) {
       scheduler->Simulate(160);
     }
 
-   vector<array<double, 3>> all_ri = GetAllRI();
-   double mean_ri = 0;
-   for (unsigned int i = 0; i < all_ri.size(); i++) {
-     mean_ri += all_ri[i][0];
-   }
-   cout << setprecision(3)
-        << "Day " << i+1 << "/" << (int)max_step/160 << " simulated:\n"
-        << "Average ri = " << (double)mean_ri/all_ri.size() << " ; "
-        << GetDeathRate(num_cells) << "% of cell death"<< endl;
-   //TODO delete all "mosaic" substances in simulation after mosaics are done
-   // if (i > 2100) {
-   //   delete [substances];
-   // }
+    vector<array<double, 3>> all_ri = GetAllRI();
+    double mean_ri = 0;
+    for (unsigned int i = 0; i < all_ri.size(); i++) {
+      cout << "type: " << all_ri[i][1]
+      	   << " - ri: " << all_ri[i][0]
+      	   << " - population: " << all_ri[i][2]
+	   << " - max pop: " << max_pop_list[(int)all_ri[i][1]]
+	   << " - death: " << (1- ((double)all_ri[i][2] / max_pop_list[(int)all_ri[i][1]])) *100 << endl;
+
+      mean_ri += all_ri[i][0];
+    }
+    cout << setprecision(3)
+	 << "Day " << i+1 << "/" << (int)max_step/160 << " simulated:\n"
+	 << "Average ri = " << (double)mean_ri/all_ri.size() << " ; "
+	 << GetDeathRate(num_cells) << "% of cell death"<< endl;
+    //TODO delete all "mosaic" substances in simulation after mosaics are done
+    // if (i > 2100) {
+    //   delete [substances];
+    // }
   }
 
   if (write_swc) {

@@ -27,7 +27,7 @@ namespace bdm {
       cell->AddBiologyModule(new Substance_secretion_BM());
       cell->AddBiologyModule(new RGC_mosaic_BM());
       cell->AddBiologyModule(new Internal_clock_BM());
-      cell->AddBiologyModule(new Dendrite_creation_BM());
+      // cell->AddBiologyModule(new Dendrite_creation_BM());
       rm->push_back(cell);
     }
   }  // end CellCreator
