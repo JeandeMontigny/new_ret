@@ -23,6 +23,7 @@ namespace bdm {
 inline int Simulate(int argc, const char** argv) {
   bool cell_fate = true;
 
+  bool verbose = true;
   bool write_ri = true;
   bool write_positions = true;
   bool write_swc = false;
@@ -282,12 +283,14 @@ inline int Simulate(int argc, const char** argv) {
     vector<array<double, 3>> all_ri = GetAllRI();
     double mean_ri = 0;
     for (unsigned int i = 0; i < all_ri.size(); i++) {
-      cout << "type: " << all_ri[i][1]
-	   << " - ri: " << all_ri[i][0]
-	   << " - population: " << all_ri[i][2]
-	   << " - max pop: " << max_pop_list[(int)all_ri[i][1]]
-	   << " - death: " << (1- ((double)all_ri[i][2] / max_pop_list[(int)all_ri[i][1]])) *100 << endl;
-
+      if (verbose) {
+        cout << "type: " << all_ri[i][1]
+  	         << " - ri: " << all_ri[i][0]
+  	         << " - population: " << all_ri[i][2]
+  	         << " - max pop: " << max_pop_list[(int)all_ri[i][1]]
+  	         << " - death: " << (1- ((double)all_ri[i][2] /
+                max_pop_list[(int)all_ri[i][1]])) *100 << endl;
+      }
       mean_ri += all_ri[i][0];
     }
     cout << setprecision(3)
