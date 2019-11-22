@@ -29,7 +29,7 @@ inline int Simulate(int argc, const char** argv) {
   bool write_swc = false;
   bool clean_result_dir = true;
 
-  int max_step = 1985; // 2240 = 13 days - 160 steps per day
+  int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
   int cell_density = 8600 ; // 8600 - 65% ~= 3000
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
