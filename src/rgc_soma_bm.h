@@ -269,7 +269,7 @@ namespace bdm {
         }
         else if (cell_type == 107) {
           dg = rm->GetDiffusionGrid("on_o");
-          movement_threshold = 2.03;
+          movement_threshold = 2.031;
           if (!with_movement && !with_fate && with_death) { death_threshold = 2.05; }
           if (!with_movement && with_fate && with_death) { death_threshold = 2.0425;}
           else { death_threshold = 2.035; }
@@ -383,7 +383,7 @@ namespace bdm {
         }
         else if (cell_type == 204) {
           dg = rm->GetDiffusionGrid("off_mini_j");
-          movement_threshold = 2.099;
+          movement_threshold = 2.098;
           if (!with_movement && !with_fate && with_death) { death_threshold = 2.179; }
           if (!with_movement && with_fate && with_death) { death_threshold = 2.155;}
           else { death_threshold = 2.13; }

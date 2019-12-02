@@ -23,7 +23,7 @@ namespace bdm {
 inline int Simulate(int argc, const char** argv) {
   bool cell_fate = true;
 
-  bool verbose = true;
+  bool verbose = false;
   bool write_ri = true;
   bool write_positions = true;
   bool write_swc = false;
