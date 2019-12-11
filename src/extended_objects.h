@@ -1,6 +1,7 @@
 #ifndef EXTENDED_OBJECTS_
 #define EXTENDED_OBJECTS_
 
+#include "core/sim_object/sim_object.h"
 #include "neuroscience/neuroscience.h"
 
 namespace bdm {

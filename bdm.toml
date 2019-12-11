@@ -9,7 +9,7 @@ neurite_min_length = 1.0
 neurite_max_length = 2.0
 
 [visualization]
-export = true
+export = false
 live = false
 export_interval = 16
 

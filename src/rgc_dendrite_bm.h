@@ -47,17 +47,42 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         Double3 gradient_guide;
         Double3 prefered_dir = {0, 0, 0};
         double concentration = 0;
-        double on_off_factor = 1;
-        bool homotypic_competition = true;
+        double on_off_factor = 2;
+        bool homotypic_competition = false;
         double gradient_weight = 0.2;
-        double randomness_weight = 0.5;
+        double randomness_weight = 0.4;
         double old_direction_weight = 4.5;
         double conc_retract_threshold = 0.01;
         double diam_retract_threshold = 0.85;
-        double shrinkage = 0.0007;
+        double shrinkage = 0.00058;
         double bifurc_proba = 0.01*ne->GetDiameter();
         double bifurc_threshold = 0.04;
 
+	// if on-off cells
+	if (cell_type/100 == 0) {
+          shrinkage = 0.0005;
+          randomness_weight = 0.5;
+          homotypic_competition = false;
+          bifurc_proba = 0.0058 * ne->GetDiameter();
+	  
+	}
+	// if on cells
+	if (cell_type/100 == 1) {
+          shrinkage = 0.00060;
+          randomness_weight = 0.4;
+          homotypic_competition = false;
+          bifurc_proba = 0.0059 * ne->GetDiameter();
+	  
+	}
+	// if off cells
+	if (cell_type/100 == 2) {
+          shrinkage = 0.00058;
+          randomness_weight = 0.5;
+          homotypic_competition = false;
+          bifurc_proba = 0.0058 * ne->GetDiameter();
+	  
+	}
+	
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
         || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
           on_off_factor = 3;
@@ -74,6 +99,21 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           bifurc_threshold = 0.038;
           diam_retract_threshold = 0.8;
         }
+
+	if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
+          shrinkage = 0.00038;
+          randomness_weight = 0.8;
+          homotypic_competition = false;
+          bifurc_proba = 0.0057 * ne->GetDiameter();
+        }
+
+	if (cell_type == 103) {
+          shrinkage = 0.00038;
+          randomness_weight = 0.7;
+          homotypic_competition = false;
+          bifurc_proba = 0.0056 * ne->GetDiameter();
+        }
+	
         if (cell_type == 203) {
           shrinkage = 0.000426;
           randomness_weight = 0.8;
@@ -140,6 +180,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           // cout << "homotypic_competition: " << homotypic_competition << endl;
           // homo-type interaction
           if (homotypic_competition) {
+	    cout << "WARNING: homotypic_competition is true" << endl;
             double squared_radius = 1;
             int sameType = 0;
             int otherType = 0;
