@@ -68,10 +68,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	}
 	// if on cells
 	if (cell_type/100 == 1) {
-          shrinkage = 0.00060;
-          randomness_weight = 0.4;
+          shrinkage = 0.00066;
+          randomness_weight = 0.35;
           homotypic_competition = false;
-          bifurc_proba = 0.0059 * ne->GetDiameter();
+          bifurc_proba = 0.0042 * ne->GetDiameter();
 	  
 	}
 	// if off cells
