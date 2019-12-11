@@ -69,10 +69,9 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	// if on cells
 	if (cell_type/100 == 1) {
           shrinkage = 0.00066;
-          randomness_weight = 0.35;
+          randomness_weight = 0.6;
           homotypic_competition = false;
           bifurc_proba = 0.0042 * ne->GetDiameter();
-	  
 	}
 	// if off cells
 	if (cell_type/100 == 2) {
@@ -80,7 +79,6 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           randomness_weight = 0.5;
           homotypic_competition = false;
           bifurc_proba = 0.0058 * ne->GetDiameter();
-	  
 	}
 	
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
@@ -106,12 +104,26 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           homotypic_competition = false;
           bifurc_proba = 0.0057 * ne->GetDiameter();
         }
-
 	if (cell_type == 103) {
           shrinkage = 0.00038;
           randomness_weight = 0.7;
           homotypic_competition = false;
           bifurc_proba = 0.0056 * ne->GetDiameter();
+        }
+	if (cell_type == 116) {
+	  shrinkage = 0.0005;
+          randomness_weight = 0.4;
+	  bifurc_proba = 0.004 * ne->GetDiameter();
+        }
+	if (cell_type == 117) {
+	  shrinkage = 0.00035;
+          randomness_weight = 0.4;
+	  bifurc_proba = 0.0035 * ne->GetDiameter();
+        }
+	if (cell_type == 118) {
+	  shrinkage = 0.0002;
+          randomness_weight = 0.4;
+	  bifurc_proba = 0.0035 * ne->GetDiameter();
         }
 	
         if (cell_type == 203) {
