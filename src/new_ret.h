@@ -27,6 +27,7 @@ inline int Simulate(int argc, const char** argv) {
   bool write_ri = true;
   bool write_positions = true;
   bool write_swc = false;
+  bool write_distance = true;
   bool clean_result_dir = true;
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
@@ -301,6 +302,11 @@ inline int Simulate(int argc, const char** argv) {
     // if (i > 2100) {
     //   delete [substances];
     // }
+  }
+
+  if (write_distance) {
+    ExportMigrationDitance(my_seed);
+    std::cout << "Migration distance exported" << std::endl;
   }
 
   if (write_swc) {

@@ -250,6 +250,30 @@ namespace bdm {
     return (1 - ((double)cell_in_simu / num_cells)) * 100;
   } // end GetDeathRate
 
+
+  inline void ExportMigrationDitance(int seed) {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    auto* param = sim->GetParam();
+
+    vector<double> list_distances;
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+	list_distances.push_back(cell->GetDistanceTravelled());
+      }
+    });  // end for cell in simulation
+
+    ofstream migration_distance;
+    string mig_dist_fileName = Concat(param->output_dir_,
+				 "/results", seed, "/mig_dist.swc").c_str();
+    migration_distance.open(mig_dist_fileName);
+    for (unsigned int i = 0; i < list_distances.size(); i++) {
+      migration_distance << list_distances[i] << "\n";
+    }
+    migration_distance.close();
+  } // end ExportMigrationDitance
+
 }
 
 #endif
