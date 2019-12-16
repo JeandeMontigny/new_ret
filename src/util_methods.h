@@ -251,26 +251,45 @@ namespace bdm {
   } // end GetDeathRate
 
 
+  inline int GetCellTypeDensity(int type) {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    auto* param = sim->GetParam();
+    int cell_in_simu = 0;
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+	if (cell->GetCellType() == type) {
+	  cell_in_simu++;
+	}
+      }
+    });  // end for cell in simulation
+
+    return cell_in_simu*(param->max_bound_/1000);
+  }
+
+
   inline void ExportMigrationDitance(int seed) {
     auto* sim = Simulation::GetActive();
     auto* rm = sim->GetResourceManager();
     auto* param = sim->GetParam();
 
-    vector<double> list_distances;
+    ofstream migration_distance;
+    string mig_dist_fileName = Concat(param->output_dir_,
+				      "/results", seed, "/mig_dist.txt").c_str();
+    migration_distance.open(mig_dist_fileName);
+
     rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
       auto* cell = dynamic_cast<MyCell*>(so);
       if (cell) {
-	list_distances.push_back(cell->GetDistanceTravelled());
+	// type dist
+	migration_distance << cell->GetCellType() << " "
+			   << cell->GetDistanceTravelled() << " "
+			   << GetRi(cell->GetCellType()) << " "
+			   << GetCellTypeDensity(cell->GetCellType()) << "\n";
       }
     });  // end for cell in simulation
 
-    ofstream migration_distance;
-    string mig_dist_fileName = Concat(param->output_dir_,
-				 "/results", seed, "/mig_dist.swc").c_str();
-    migration_distance.open(mig_dist_fileName);
-    for (unsigned int i = 0; i < list_distances.size(); i++) {
-      migration_distance << list_distances[i] << "\n";
-    }
     migration_distance.close();
   } // end ExportMigrationDitance
 
