@@ -68,17 +68,17 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	}
 	// if on cells
 	if (cell_type/100 == 1) {
-          shrinkage = 0.00068;
+          shrinkage = 0.00072;
           randomness_weight = 0.6;
           homotypic_competition = false;
           bifurc_proba = 0.0042 * ne->GetDiameter();
 	}
 	// if off cells
 	if (cell_type/100 == 2) {
-          shrinkage = 0.00058;
-          randomness_weight = 0.5;
+          shrinkage = 0.00065;
+          randomness_weight = 0.6;
           homotypic_competition = false;
-          bifurc_proba = 0.0058 * ne->GetDiameter();
+          bifurc_proba = 0.0075 * ne->GetDiameter();
 	}
 	
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
@@ -128,24 +128,24 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	
         if (cell_type == 203) {
           shrinkage = 0.000426;
-          randomness_weight = 0.8;
+          randomness_weight = 0.6;
           homotypic_competition = false;
           bifurc_proba = 0.00583 * ne->GetDiameter();
-          prefered_dir = {0.06, 0.06, 0};
+          prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 204) {
           shrinkage = 0.00068;
-          randomness_weight = 0.8;
+          randomness_weight = 0.6;
           homotypic_competition = false;
           bifurc_proba = 0.0095 * ne->GetDiameter();
-          prefered_dir = {0.06, 0.06, 0};
+          prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 205) {
           shrinkage = 0.00068;
-          randomness_weight = 0.8;
+          randomness_weight = 0.6;
           homotypic_competition = false;
           bifurc_proba = 0.0115 * ne->GetDiameter();
-          prefered_dir = {0.05, 0.05, 0};
+          prefered_dir = {0.04, 0.04, 0};
         }
 
         if (cell_type/100 == 0) {
