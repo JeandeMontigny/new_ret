@@ -5,6 +5,8 @@
 #include "extended_objects.h"
 #include "rgc_dendrite_bm.h"
 #include "util_methods.h"
+#include <iostream>
+#include <random>
 
 namespace bdm {
 
@@ -294,26 +296,24 @@ namespace bdm {
           // average dendrites number = 4.5; std = 1.2
           int dendrite_nb = (int)random->Uniform(2, 7);
           // dendrites number depending on cell type
-          if (cell_type == 0 || cell_type == 1
-            || cell_type == 2 || cell_type == 3) {
-            // dendrite_nb = RandomPoisson(4.7);
-            double L = exp(-4.7);
-            int k = 0;
-            double p = 1;
-            do {
-              k = k + 1;
-              double u = random->Uniform(0.15, 1);
-              p = p * u;
-            } while (p > L);
-            dendrite_nb = k - 1;
-            if (dendrite_nb < 3) { dendrite_nb = 3; }
-            else if (dendrite_nb > 6) { dendrite_nb = 3; }
+	  if (cell_type/100 == 0) {
+            dendrite_nb = (int)random->Uniform(3, 7);
           }
 	  if (cell_type/100 == 1) {
             dendrite_nb = (int)random->Uniform(3.5, 7.5);
           }
 	  if (cell_type/100 == 2) {
             dendrite_nb = (int)random->Uniform(2.8, 6.5);
+          }
+
+	  if (cell_type == 0 || cell_type == 1
+            || cell_type == 2 || cell_type == 3) {
+            // dendrite_nb = RandomPoisson(4.7);
+	    std::default_random_engine generator;
+	    std::poisson_distribution<int> distribution(4.7);
+	    dendrite_nb = distribution(generator);
+	    if (dendrite_nb < 3) dendrite_nb = 3;
+	    if (dendrite_nb > 6) dendrite_nb = 3;
           }
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(3, 6);
