@@ -48,7 +48,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         Double3 prefered_dir = {0, 0, 0};
         double concentration = 0;
         double on_off_factor = 2;
-        bool homotypic_competition = false;
+        bool homotypic_competition = true;
         double gradient_weight = 0.2;
         double randomness_weight = 0.4;
         double old_direction_weight = 4.5;
@@ -62,7 +62,6 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	if (cell_type/100 == 0) {
           shrinkage = 0.0005;
           randomness_weight = 0.5;
-          homotypic_competition = false;
           bifurc_proba = 0.0058 * ne->GetDiameter();
 	  
 	}
@@ -70,14 +69,12 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	if (cell_type/100 == 1) {
           shrinkage = 0.00072;
           randomness_weight = 0.6;
-          homotypic_competition = false;
           bifurc_proba = 0.0042 * ne->GetDiameter();
 	}
 	// if off cells
 	if (cell_type/100 == 2) {
           shrinkage = 0.00065;
           randomness_weight = 0.6;
-          homotypic_competition = false;
           bifurc_proba = 0.0075 * ne->GetDiameter();
 	}
 	
@@ -86,13 +83,11 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           on_off_factor = 3;
           shrinkage = 0.0004;
           randomness_weight = 0.8;
-          homotypic_competition = false;
           bifurc_proba = 0.0058 * ne->GetDiameter();
         }
         if (cell_type == 5) {
           shrinkage = 0.000682;
           randomness_weight = 0.8;
-          homotypic_competition = false;
           bifurc_proba = 0.0127 * ne->GetDiameter();
           bifurc_threshold = 0.038;
           diam_retract_threshold = 0.8;
@@ -101,13 +96,11 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
           shrinkage = 0.00038;
           randomness_weight = 0.8;
-          homotypic_competition = false;
           bifurc_proba = 0.0057 * ne->GetDiameter();
         }
 	if (cell_type == 103) {
           shrinkage = 0.00038;
           randomness_weight = 0.7;
-          homotypic_competition = false;
           bifurc_proba = 0.0056 * ne->GetDiameter();
         }
 	if (cell_type == 116) {
@@ -129,25 +122,23 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         if (cell_type == 203) {
           shrinkage = 0.000426;
           randomness_weight = 0.6;
-          homotypic_competition = false;
           bifurc_proba = 0.00583 * ne->GetDiameter();
           prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 204) {
           shrinkage = 0.00068;
           randomness_weight = 0.6;
-          homotypic_competition = false;
           bifurc_proba = 0.0095 * ne->GetDiameter();
           prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 205) {
           shrinkage = 0.00068;
           randomness_weight = 0.6;
-          homotypic_competition = false;
           bifurc_proba = 0.0115 * ne->GetDiameter();
           prefered_dir = {0.04, 0.04, 0};
         }
 
+	// set correct concentration and gradient
         if (cell_type/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());
           double conc_off = dg_guide_off_->GetConcentration(ne->GetPosition());
@@ -192,10 +183,8 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           // cout << "homotypic_competition: " << homotypic_competition << endl;
           // homo-type interaction
           if (homotypic_competition) {
-	    cout << "WARNING: homotypic_competition is true" << endl;
-            double squared_radius = 1;
-            int sameType = 0;
-            int otherType = 0;
+            double squared_radius = 2.25;
+            int homotypic_arbour = 0, my_arbour = 0;
             // counters for neurites neighbours
             rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
               auto* neighbor = dynamic_cast<MyNeurite*>(so);
@@ -206,23 +195,25 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
                   pow(ne_position[0] - neighbor_position[0], 2) +
                   pow(ne_position[1] - neighbor_position[1], 2) +
                   pow(ne_position[2] - neighbor_position[2], 2);
-                // if not the same soma
+                // if within radius and not the same soma
                 if (distance < squared_radius) {
-                  if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
-                    if (neighbor->GetMySoma()->GetCellType() == cell_type) {
-                      sameType++;
-                    }
-                    else {
-                      otherType++;
-                    }
-                  }
-                } // if within radius
-              }
-            });
+		  if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
+		    if (neighbor->GetMySoma()->GetCellType() == cell_type) {
+		      homotypic_arbour++;
+		    }
+		  } // end if not same soma
+		  // if same arbour
+		  else {
+		    my_arbour++;
+		  }
+		} // end if within radius
+              } // end if neighbor
+	    }); // end apply on all elements 
             // if is surrounded by homotype dendrites
-            if (sameType > otherType) {
+            if (homotypic_arbour > my_arbour) {
               ne->SetHasToRetract(true);
               ne->SetDiamBeforeRetraction(ne->GetDiameter());
+	      ne->SetBeyondThreshold(false);
             }
           } // end homo-type interaction
 
@@ -239,16 +230,16 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         else {
           ne->RetractTerminalEnd(40);
           // if neurite has retracted enough because of interactions
-        	if (!ne->GetBeyondThreshold()
-            && ne->GetDiameter() > ne->GetDiamBeforeRetraction()+0.02) {
+	  if (!ne->GetBeyondThreshold()
+	      && ne->GetDiameter() > ne->GetDiamBeforeRetraction()+0.002) {
             ne->SetHasToRetract(false);
-        	  ne->RemoveBiologyModule(this);
-        	}
+	    // ne->RemoveBiologyModule(this);
+	  }
           // if neurite is back to higher concentration
-        	if (ne->GetBeyondThreshold() && concentration > 0.02) {
-        		ne->SetBeyondThreshold(false);
-        		ne->SetHasToRetract(false);
-        	}
+	  if (ne->GetBeyondThreshold() && concentration > 0.02) {
+	    ne->SetBeyondThreshold(false);
+	    ne->SetHasToRetract(false);
+	  }
         }
 
       } // end if terminal
