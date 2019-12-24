@@ -308,12 +308,7 @@ namespace bdm {
 
 	  if (cell_type == 0 || cell_type == 1
             || cell_type == 2 || cell_type == 3) {
-            // dendrite_nb = RandomPoisson(4.7);
-	    std::default_random_engine generator;
-	    std::poisson_distribution<int> distribution(4.7);
-	    dendrite_nb = distribution(generator);
-	    if (dendrite_nb < 3) dendrite_nb = 3;
-	    if (dendrite_nb > 6) dendrite_nb = 3;
+            dendrite_nb = (int)random->Uniform(4, 8);
           }
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(3, 6);

@@ -81,9 +81,9 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
         || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
           on_off_factor = 3;
-          shrinkage = 0.0004;
-          randomness_weight = 0.8;
-          bifurc_proba = 0.0058 * ne->GetDiameter();
+          shrinkage = 0.00042; // 0.4
+          randomness_weight = 0.7; // 0.8
+          bifurc_proba = 0.00785 * ne->GetDiameter();
         }
         if (cell_type == 5) {
           shrinkage = 0.000682;
