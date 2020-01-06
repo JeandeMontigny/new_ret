@@ -120,9 +120,9 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         }
 	
         if (cell_type == 203) {
-          shrinkage = 0.000426;
+          shrinkage = 0.00036; // 426
           randomness_weight = 0.6;
-          bifurc_proba = 0.00583 * ne->GetDiameter();
+          bifurc_proba = 0.00682 * ne->GetDiameter();
           prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 204) {
@@ -183,7 +183,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           // cout << "homotypic_competition: " << homotypic_competition << endl;
           // homo-type interaction
           if (homotypic_competition) {
-            double squared_radius = 2.25;
+            double squared_radius = 1.44;
             int homotypic_arbour = 0, my_arbour = 0;
             // counters for neurites neighbours
 
@@ -215,7 +215,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	    ctxt->ForEachNeighborWithinRadius(count_homotypic_neighbours, *ne, squared_radius);
 
 	    // if is surrounded by homotype dendrites
-            if (homotypic_arbour > my_arbour) {
+            if (homotypic_arbour > my_arbour && ne->GetDiameter() < 0.85) {
               ne->SetHasToRetract(true);
               ne->SetDiamBeforeRetraction(ne->GetDiameter());
 	      ne->SetBeyondThreshold(false);
@@ -234,9 +234,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         // if neurite has to retract
         else {
           ne->RetractTerminalEnd(40);
+	  ne->SetDiameter(ne->GetDiameter()+0.00005);
           // if neurite has retracted enough because of interactions
 	  if (!ne->GetBeyondThreshold()
-	      && ne->GetDiameter() > ne->GetDiamBeforeRetraction()+0.002) {
+	      && ne->GetDiameter() > ne->GetDiamBeforeRetraction()+0.001) {
             ne->SetHasToRetract(false);
 	    // ne->RemoveBiologyModule(this);
 	  }
