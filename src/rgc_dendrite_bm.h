@@ -186,30 +186,35 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
             double squared_radius = 2.25;
             int homotypic_arbour = 0, my_arbour = 0;
             // counters for neurites neighbours
-            rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
-              auto* neighbor = dynamic_cast<MyNeurite*>(so);
-              if (neighbor) {
-                Double3 neighbor_position = neighbor->GetPosition();
+
+	    auto count_homotypic_neighbours = [&ne, &homotypic_arbour, &my_arbour, &cell_type](const auto* neighbor) {
+              if (neighbor->GetShape() == Shape::kCylinder) {
+		auto* ne_neighbor = bdm_static_cast<const MyNeurite*>(neighbor);
+		// MyCell* neighbor_soma = bdm_static_cast<const MyNeurite*>(neighbor)->GetMySoma();
+                Double3 neighbor_position = ne_neighbor->GetPosition();
                 Double3 ne_position = ne->GetPosition();
                 double distance =
                   pow(ne_position[0] - neighbor_position[0], 2) +
                   pow(ne_position[1] - neighbor_position[1], 2) +
                   pow(ne_position[2] - neighbor_position[2], 2);
-                // if within radius and not the same soma
-                if (distance < squared_radius) {
-		  if (!(neighbor->GetMySoma() == ne->GetMySoma())) {
-		    if (neighbor->GetMySoma()->GetCellType() == cell_type) {
-		      homotypic_arbour++;
-		    }
-		  } // end if not same soma
-		  // if same arbour
-		  else {
-		    my_arbour++;
+                // if not the same soma
+		if (!(ne_neighbor->GetMySoma() == ne->GetMySoma())) {
+		  // if same cell type
+		  if (ne_neighbor->GetMySoma()->GetCellType() == cell_type) {
+		    homotypic_arbour++;
 		  }
-		} // end if within radius
+		} // end if not same soma
+		  // if same arbour
+		else {
+		  my_arbour++;
+		}
               } // end if neighbor
-	    }); // end apply on all elements 
-            // if is surrounded by homotype dendrites
+	    };
+
+	    auto* ctxt = sim->GetExecutionContext();
+	    ctxt->ForEachNeighborWithinRadius(count_homotypic_neighbours, *ne, squared_radius);
+
+	    // if is surrounded by homotype dendrites
             if (homotypic_arbour > my_arbour) {
               ne->SetHasToRetract(true);
               ne->SetDiamBeforeRetraction(ne->GetDiameter());

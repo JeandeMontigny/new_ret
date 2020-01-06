@@ -90,6 +90,7 @@ namespace bdm {
 
     void SetMySoma(SoPointer<MyCell> soma) { its_soma_ = soma; }
     SoPointer<MyCell> GetMySoma() { return its_soma_; }
+    SoPointer<MyCell> GetMySoma() const { return its_soma_; }
 
    private:
      bool has_to_retract_;
