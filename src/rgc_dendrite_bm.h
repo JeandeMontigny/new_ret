@@ -73,9 +73,9 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 	}
 	// if off cells
 	if (cell_type/100 == 2) {
-          shrinkage = 0.00065;
-          randomness_weight = 0.6;
-          bifurc_proba = 0.0075 * ne->GetDiameter();
+          shrinkage = 0.00038;
+          randomness_weight = 0.5;
+          bifurc_proba = 0.0044 * ne->GetDiameter();
 	}
 	
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
@@ -147,7 +147,14 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           bifurc_proba = 0.011 * ne->GetDiameter();
           prefered_dir = {0.04, 0.04, 0};
         }
-
+	/*
+	if (cell_type == 206 || cell_type == 207) {
+          shrinkage = 0.00045;
+          randomness_weight = 0.5;
+          bifurc_proba = 0.005 * ne->GetDiameter();
+        }
+	*/
+	
 	// set correct concentration and gradient
         if (cell_type/100 == 0) {
           double conc_on = dg_guide_on_->GetConcentration(ne->GetPosition());

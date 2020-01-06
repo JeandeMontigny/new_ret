@@ -58,22 +58,19 @@ inline int Simulate(int argc, const char** argv) {
 
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
-
-  // CellCreator(param->min_bound_, param->max_bound_, 31, 0);
-  // CellCreator(param->min_bound_, param->max_bound_, 31, 1);
-  // CellCreator(param->min_bound_, param->max_bound_, 31, 2);
-  // CellCreator(param->min_bound_, param->max_bound_, 31, 3);
-  CellCreator(param->min_bound_, param->max_bound_, 62, 5);
   /*
-  CellCreator(param->min_bound_, param->max_bound_, 50, 203);
-  CellCreator(param->min_bound_, param->max_bound_, 87, 204);
-  CellCreator(param->min_bound_, param->max_bound_, 20, 205);
+  CellCreator(param->min_bound_, param->max_bound_, 31, 0);
+  CellCreator(param->min_bound_, param->max_bound_, 31, 1);
+  CellCreator(param->min_bound_, param->max_bound_, 31, 2);
+  CellCreator(param->min_bound_, param->max_bound_, 31, 3);
+  CellCreator(param->min_bound_, param->max_bound_, 62, 5);
+  */
 
   // nb root: 4.02 - std: 1.14
   // diameter: 142.36 - std: 30.08
   // branchin nb: 117.3 - std: 75.98
   // aniso: 0.46 - std: 0.22
-
+  /*
   CellCreator(param->min_bound_, param->max_bound_, 5, 4);
   CellCreator(param->min_bound_, param->max_bound_, 5, 6);
   CellCreator(param->min_bound_, param->max_bound_, 5, 7);
@@ -101,17 +98,21 @@ inline int Simulate(int argc, const char** argv) {
   CellCreator(param->min_bound_, param->max_bound_, 5, 116);
   CellCreator(param->min_bound_, param->max_bound_, 5, 117);
   CellCreator(param->min_bound_, param->max_bound_, 5, 118);
+  */
 
-  CellCreator(param->min_bound_, param->max_bound_, 10, 200);
-  CellCreator(param->min_bound_, param->max_bound_, 10, 201);
+  CellCreator(param->min_bound_, param->max_bound_, 10, 200); // sustained
+  CellCreator(param->min_bound_, param->max_bound_, 10, 201); // transient
   CellCreator(param->min_bound_, param->max_bound_, 16, 202);
+  CellCreator(param->min_bound_, param->max_bound_, 50, 203);
+  CellCreator(param->min_bound_, param->max_bound_, 87, 204);
+  CellCreator(param->min_bound_, param->max_bound_, 20, 205);
   CellCreator(param->min_bound_, param->max_bound_, 5, 206);
   CellCreator(param->min_bound_, param->max_bound_, 5, 207);
   CellCreator(param->min_bound_, param->max_bound_, 15, 208);
   CellCreator(param->min_bound_, param->max_bound_, 12, 209);
   CellCreator(param->min_bound_, param->max_bound_, 10, 210);
   CellCreator(param->min_bound_, param->max_bound_, 9, 211);
-  */  
+
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
   // ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef, decay_const, param->max_bound_/4);
   // ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef, decay_const, param->max_bound_/4);
