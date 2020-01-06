@@ -22,7 +22,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  int max_step = 3360; // 2240 = 14 days - 160 steps per day
+  int max_step = 3520; // 2240 = 14 days - 160 steps per day
   int cube_dim = 500; // 1000
   int cell_density = 500;
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
@@ -59,11 +59,11 @@ inline int Simulate(int argc, const char** argv) {
   // create cells
   // CellCreator(param->min_bound_, param->max_bound_, num_cells, -1);
 
-  CellCreator(param->min_bound_, param->max_bound_, 31, 0);
-  CellCreator(param->min_bound_, param->max_bound_, 31, 1);
-  CellCreator(param->min_bound_, param->max_bound_, 31, 2);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 0);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 1);
+  // CellCreator(param->min_bound_, param->max_bound_, 31, 2);
   // CellCreator(param->min_bound_, param->max_bound_, 31, 3);
-  // CellCreator(param->min_bound_, param->max_bound_, 62, 5);
+  CellCreator(param->min_bound_, param->max_bound_, 62, 5);
   /*
   CellCreator(param->min_bound_, param->max_bound_, 50, 203);
   CellCreator(param->min_bound_, param->max_bound_, 87, 204);
