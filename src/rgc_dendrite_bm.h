@@ -118,23 +118,28 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           randomness_weight = 0.4;
 	  bifurc_proba = 0.003 * ne->GetDiameter();
         }
-	
+
+	if (cell_type == 200 || cell_type == 201) {
+          shrinkage = 0.00042;
+          randomness_weight = 0.4;
+          bifurc_proba = 0.009 * ne->GetDiameter();
+        }
         if (cell_type == 203) {
-          shrinkage = 0.00036; // 426
+          shrinkage = 0.00036;
           randomness_weight = 0.6;
           bifurc_proba = 0.00682 * ne->GetDiameter();
           prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 204) {
-          shrinkage = 0.00068;
+          shrinkage = 0.00064;
           randomness_weight = 0.6;
-          bifurc_proba = 0.0095 * ne->GetDiameter();
+          bifurc_proba = 0.011 * ne->GetDiameter();
           prefered_dir = {0.05, 0.05, 0};
         }
         if (cell_type == 205) {
-          shrinkage = 0.00068;
+          shrinkage = 0.00064;
           randomness_weight = 0.6;
-          bifurc_proba = 0.0115 * ne->GetDiameter();
+          bifurc_proba = 0.011 * ne->GetDiameter();
           prefered_dir = {0.04, 0.04, 0};
         }
 
