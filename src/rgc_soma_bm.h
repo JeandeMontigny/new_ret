@@ -313,6 +313,11 @@ namespace bdm {
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(5, 6.5);
           }
+
+	  if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
+            dendrite_nb = (int)random->Uniform(3.5, 6.8);
+          }
+	  
 	  if (cell_type == 200 || cell_type == 201) {
             dendrite_nb = (int)random->Uniform(3.2, 6);
           }
@@ -323,21 +328,7 @@ namespace bdm {
             dendrite_nb = (int)random->Uniform(3, 5.5);
           }
 
-          // if (cell_type == 200) {
-          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
-          // }
-          // else if (cell_type == 201) {
-          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
-          // }
-          // else if (cell_type == 202) {
-          //   dendrite_nb = 2 + (int)random->Uniform(1, 3);
-          // }
-          // else if (cell_type == 203) {
-          //   dendrite_nb = 3 + (int)random->Uniform(1, 3);
-          // }
-
           for (int i = 0; i < dendrite_nb; i++) {
-            // root location - TODO: no overlap
             Double3 dendrite_root = {0,0,1};
             // create dendrites
             MyNeurite my_neurite;
