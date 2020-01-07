@@ -103,10 +103,10 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           randomness_weight = 0.4;
           bifurc_proba = 0.0061 * ne->GetDiameter();
         }
-	if (cell_type == 104) {
-          shrinkage = 0.00042;
+	if (cell_type == 104 || cell_type == 105 || cell_type == 106) {
+          shrinkage = 0.00044;
           randomness_weight = 0.4;
-          bifurc_proba = 0.005 * ne->GetDiameter();
+          bifurc_proba = 0.00489 * ne->GetDiameter();
         }
 	if (cell_type == 116) {
 	  shrinkage = 0.0005;
