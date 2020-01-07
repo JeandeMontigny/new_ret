@@ -296,38 +296,38 @@ namespace bdm {
           // average dendrites number = 4.5; std = 1.2
           int dendrite_nb = (int)random->Uniform(2, 7);
           // dendrites number depending on cell type
-	  if (cell_type/100 == 0) {
+          if (cell_type/100 == 0) {
             dendrite_nb = (int)random->Uniform(3, 7);
           }
-	  if (cell_type/100 == 1) {
+          if (cell_type/100 == 1) {
             dendrite_nb = (int)random->Uniform(3.5, 7.5);
           }
-	  if (cell_type/100 == 2) {
+          if (cell_type/100 == 2) {
             dendrite_nb = (int)random->Uniform(3.2, 6.6);
           }
 
-	  if (cell_type == 0 || cell_type == 1
+          if (cell_type == 0 || cell_type == 1
             || cell_type == 2 || cell_type == 3) {
-            dendrite_nb = (int)random->Uniform(4, 8);
+            dendrite_nb = (int)random->Uniform(3, 7.5);
           }
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(5, 6.5);
           }
 
-	  if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
+          if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
             dendrite_nb = (int)random->Uniform(3.5, 6.8);
           }
-	  if (cell_type == 103) {
+          if (cell_type == 103) {
             dendrite_nb = (int)random->Uniform(3.2, 6);
           }
-	  if (cell_type == 104 || cell_type == 105 || cell_type == 106) {
+          if (cell_type == 104 || cell_type == 105 || cell_type == 106) {
             dendrite_nb = (int)random->Uniform(3.2, 6);
           }
-	  
-	  if (cell_type == 200 || cell_type == 201) {
+
+          if (cell_type == 200 || cell_type == 201) {
             dendrite_nb = (int)random->Uniform(3.2, 6);
           }
-	  if (cell_type == 202) {
+          if (cell_type == 202) {
             dendrite_nb = (int)random->Uniform(3.2, 6.2);
           }
           if (cell_type == 203 || cell_type == 204 || cell_type == 205) {
