@@ -310,6 +310,9 @@ namespace bdm {
             || cell_type == 2 || cell_type == 3) {
             dendrite_nb = (int)random->Uniform(3, 7.5);
           }
+          if (cell_type == 4) {
+            dendrite_nb = (int)random->Uniform(3.4, 5.8);
+          }
           if (cell_type == 5) {
             dendrite_nb = (int)random->Uniform(3.4, 5.8);
           }
