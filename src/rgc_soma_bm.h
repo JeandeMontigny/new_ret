@@ -306,37 +306,6 @@ namespace bdm {
             dendrite_nb = (int)random->Uniform(3.2, 6.6);
           }
 
-          if (cell_type == 0 || cell_type == 1
-            || cell_type == 2 || cell_type == 3) {
-            dendrite_nb = (int)random->Uniform(3, 7.5);
-          }
-          if (cell_type == 4) {
-            dendrite_nb = (int)random->Uniform(3.4, 5.8);
-          }
-          if (cell_type == 5) {
-            dendrite_nb = (int)random->Uniform(3.4, 5.8);
-          }
-
-          if (cell_type == 100 || cell_type == 101 || cell_type == 102) {
-            dendrite_nb = (int)random->Uniform(3.5, 6.8);
-          }
-          if (cell_type == 103) {
-            dendrite_nb = (int)random->Uniform(3.2, 6);
-          }
-          if (cell_type == 104 || cell_type == 105 || cell_type == 106) {
-            dendrite_nb = (int)random->Uniform(3.2, 6);
-          }
-
-          if (cell_type == 200 || cell_type == 201) {
-            dendrite_nb = (int)random->Uniform(3.2, 6);
-          }
-          if (cell_type == 202) {
-            dendrite_nb = (int)random->Uniform(3.2, 6.2);
-          }
-          if (cell_type == 203 || cell_type == 204 || cell_type == 205) {
-            dendrite_nb = (int)random->Uniform(3, 5.5);
-          }
-
           for (int i = 0; i < dendrite_nb; i++) {
             Double3 dendrite_root = {0,0,1};
             // create dendrites
