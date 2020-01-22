@@ -60,22 +60,21 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 
         // if on-off cells
         if (cell_type/100 == 0) {
-          shrinkage = 0.0005;
+          shrinkage = 0.00056;
           randomness_weight = 0.5;
-          bifurc_proba = 0.005 * ne->GetDiameter();
+          bifurc_proba = 0.0084 * ne->GetDiameter();
         }
         // if on cells
         if (cell_type/100 == 1) {
-          shrinkage = 0.00082;
+          shrinkage = 0.00061;
           randomness_weight = 0.4;
-	  conc_retract_threshold = 0.008;
-          bifurc_proba = 0.0065 * ne->GetDiameter();
+          bifurc_proba = 0.0081 * ne->GetDiameter();
         }
         // if off cells
         if (cell_type/100 == 2) {
-          shrinkage = 0.00038;
+          shrinkage = 0.00045;
           randomness_weight = 0.5;
-          bifurc_proba = 0.0044 * ne->GetDiameter();
+          bifurc_proba = 0.0083 * ne->GetDiameter();
         }
 
         // set correct concentration and gradient
@@ -95,7 +94,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           dg_guide_on_->GetGradient(ne->GetPosition(), &gradient_guide);
           concentration = dg_guide_on_->GetConcentration(ne->GetPosition());
         }
-        if (cell_type/100 == 2 || cell_type == 5) {
+        if (cell_type/100 == 2) {
           dg_guide_off_->GetGradient(ne->GetPosition(), &gradient_guide);
           concentration = dg_guide_off_->GetConcentration(ne->GetPosition());
         }
