@@ -60,16 +60,16 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
 
         // if on-off cells
         if (cell_type/100 == 0) {
-          shrinkage = 0.0005;
+          shrinkage = 0.004;
           randomness_weight = 0.5;
-          bifurc_proba = 0.005 * ne->GetDiameter();
+          bifurc_proba = 0.09 * ne->GetDiameter();
         }
         // if on cells
         if (cell_type/100 == 1) {
-          shrinkage = 0.00082;
+          shrinkage = 0.0042;
           randomness_weight = 0.4;
 	  conc_retract_threshold = 0.008;
-          bifurc_proba = 0.0065 * ne->GetDiameter();
+          bifurc_proba = 0.09 * ne->GetDiameter();
         }
         // if off cells
         if (cell_type/100 == 2) {
@@ -81,18 +81,18 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
         if (ne->GetSubtype() == 0 || ne->GetSubtype() == 1
         || ne->GetSubtype() == 2 || ne->GetSubtype() == 3) {
           on_off_factor = 3;
-          shrinkage = 0.00042;
+          shrinkage = 0.00035;
           randomness_weight = 0.7;
-          bifurc_proba = 0.0066 * ne->GetDiameter();
+          bifurc_proba = 0.0062 * ne->GetDiameter();
         }
         if (cell_type == 4) {
           on_off_factor = 2;
-          shrinkage = 0.00052;
+          shrinkage = 0.00048;
           randomness_weight = 0.4;
-          bifurc_proba = 0.00539 * ne->GetDiameter();
+          bifurc_proba = 0.0052 * ne->GetDiameter();
         }
         if (cell_type == 5) {
-          shrinkage = 0.00074;
+          shrinkage = 0.0007;
           randomness_weight = 0.5;
           bifurc_proba = 0.018 * ne->GetDiameter();
           bifurc_threshold = 0.038;
