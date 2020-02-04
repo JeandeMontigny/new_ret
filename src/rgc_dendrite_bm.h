@@ -141,7 +141,7 @@ struct RGC_dendrite_BM : public BaseBiologyModule {
           shrinkage = 0.00064;
           randomness_weight = 0.6;
           bifurc_proba = 0.011 * ne->GetDiameter();
-          prefered_dir = {0.04, 0.04, 0};
+          prefered_dir = {0.05, 0.05, 0};
         }
 
         // set correct concentration and gradient
