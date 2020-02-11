@@ -34,6 +34,7 @@ namespace bdm {
 
 
   inline void WritePositions(int i, int seed) {
+    std::cout << "write position, step " << i << std::endl;
     auto* sim = Simulation::GetActive();
     auto* rm = sim->GetResourceManager();
     auto* param = sim->GetParam();
@@ -293,6 +294,32 @@ namespace bdm {
     migration_distance.close();
   } // end ExportMigrationDitance
 
+  inline void AnkurDeath() {
+    auto* sim = Simulation::GetActive();
+    auto* rm = sim->GetResourceManager();
+    auto* param = sim->GetParam();
+
+    double small_l = 300; // param->max_bound_ / 2
+    double big_l = 1000; // param->max_bound_
+    double c_x = 650;
+    double c_y = 650;
+    
+    rm->ApplyOnAllElements([&](SimObject* so, SoHandle) {
+      auto* cell = dynamic_cast<MyCell*>(so);
+      if (cell) {
+	auto position = cell->GetPosition();
+	double x_pos = position[0];
+	double y_pos = position[1];
+	double v = (pow((x_pos - c_x), 2) / pow(small_l, 2)) + (pow((y_pos - c_y), 2) / pow(big_l, 2));
+
+	if (v > 0.5) {
+	  cell->RemoveFromSimulation();
+	}
+      }
+    });  // end for cell in simulation
+    
+  }
+  
 }
 
 #endif
