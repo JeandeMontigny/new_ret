@@ -21,7 +21,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  bool cell_fate = true;
+  bool cell_fate = false;
 
   bool verbose = false;
   bool write_ri = true;
@@ -244,6 +244,13 @@ inline int Simulate(int argc, const char** argv) {
 
   // Run simulation
   cout << "Simulating.." << endl;
+
+  scheduler->Simulate(1);
+
+  AnkurDeath();
+
+  WritePositions(1, my_seed);
+  
   for (int i = 0; i < max_step/160; i++) {
     // if we want to export data from simulation
     if (write_ri || write_positions || write_swc) {
@@ -313,6 +320,8 @@ inline int Simulate(int argc, const char** argv) {
     WriteSwc(max_step, my_seed);
     std::cout << "Morphologies exported (swc files)" << std::endl;
   }
+
+  WritePositions(10, my_seed);
 
   cout << "Done" << endl;
   return 0;
