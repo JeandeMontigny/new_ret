@@ -34,7 +34,6 @@ namespace bdm {
 
 
   inline void WritePositions(int i, int seed) {
-    std::cout << "write position, step " << i << std::endl;
     auto* sim = Simulation::GetActive();
     auto* rm = sim->GetResourceManager();
     auto* param = sim->GetParam();
