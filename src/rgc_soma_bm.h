@@ -37,10 +37,10 @@ namespace bdm {
         Double3 gradient, diff_gradient, gradient_z;
         DiffusionGrid* dg = nullptr;
 
-        bool with_fate = true;
+        bool with_fate = false;
         bool with_movement = true;
         double movement_threshold = 1.735;
-        bool with_death = true;
+        bool with_death = false;
         double death_threshold = 1.76;
 
         /* -- cell fate -- */
