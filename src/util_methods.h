@@ -18,7 +18,7 @@ namespace bdm {
       double x = random->Uniform(min + 150, max - 150);
       double y = random->Uniform(min + 150, max - 150);
       // RGCL thickness before cell death ~24
-      double z = random->Uniform(min + 20, min + 34);
+      double z = min + 34;
 
       MyCell* cell = new MyCell({x, y, z});
       cell->SetDiameter(random->Uniform(7, 8));
@@ -27,7 +27,6 @@ namespace bdm {
       cell->AddBiologyModule(new Substance_secretion_BM());
       cell->AddBiologyModule(new RGC_mosaic_BM());
       cell->AddBiologyModule(new Internal_clock_BM());
-      // cell->AddBiologyModule(new Dendrite_creation_BM());
       rm->push_back(cell);
     }
   }  // end CellCreator

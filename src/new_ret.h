@@ -21,7 +21,7 @@
 namespace bdm {
 
 inline int Simulate(int argc, const char** argv) {
-  bool cell_fate = true;
+  bool cell_fate = false;
 
   bool verbose = false;
   bool write_ri = true;
@@ -70,147 +70,15 @@ inline int Simulate(int argc, const char** argv) {
   }
   // without cell fate
   else {
-    // on-off
-    CellCreator(param->min_bound_, param->max_bound_, 357, 0);
-    CellCreator(param->min_bound_, param->max_bound_, 357, 1);
-    CellCreator(param->min_bound_, param->max_bound_, 357, 2);
-    CellCreator(param->min_bound_, param->max_bound_, 357, 3);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 4);
-    CellCreator(param->min_bound_, param->max_bound_, 714, 5);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 6);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 7);
-    CellCreator(param->min_bound_, param->max_bound_, 171, 8);
-    CellCreator(param->min_bound_, param->max_bound_, 143, 9);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 10);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 11);
-    // on
-    CellCreator(param->min_bound_, param->max_bound_, 114, 100);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 101);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 102);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 103);
-    CellCreator(param->min_bound_, param->max_bound_, 160, 104);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 105);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 106);
-    CellCreator(param->min_bound_, param->max_bound_, 428, 107);
-    CellCreator(param->min_bound_, param->max_bound_, 286, 108);
-    CellCreator(param->min_bound_, param->max_bound_, 286, 109);
-    CellCreator(param->min_bound_, param->max_bound_, 228, 110);
-    CellCreator(param->min_bound_, param->max_bound_, 171, 111);
-    CellCreator(param->min_bound_, param->max_bound_, 171, 112);
-    CellCreator(param->min_bound_, param->max_bound_, 143, 113);
-    CellCreator(param->min_bound_, param->max_bound_, 143, 114);
-    CellCreator(param->min_bound_, param->max_bound_, 97, 115);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 116);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 117);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 118);
-    // off
-    CellCreator(param->min_bound_, param->max_bound_, 114, 200);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 201);
-    CellCreator(param->min_bound_, param->max_bound_, 180, 202);
-    CellCreator(param->min_bound_, param->max_bound_, 571, 203);
-    CellCreator(param->min_bound_, param->max_bound_, 1000, 204);
-    CellCreator(param->min_bound_, param->max_bound_, 228, 205);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 206);
-    CellCreator(param->min_bound_, param->max_bound_, 57, 207);
-    CellCreator(param->min_bound_, param->max_bound_, 171, 208);
-    CellCreator(param->min_bound_, param->max_bound_, 143, 209);
-    CellCreator(param->min_bound_, param->max_bound_, 114, 210);
-    CellCreator(param->min_bound_, param->max_bound_, 106, 211);
+    CellCreator(param->min_bound_, param->max_bound_, 357, 0); // GCL
+    CellCreator(param->min_bound_, param->max_bound_, 357, 1); // INL
   }
-  // Order: substance_name, diffusion_coefficient, decay_constant, resolution
 
-  // on-off
-  // 125, 125, 125, 125, 20, 250, 20, 20, 60, 50, 40, 40
-  ModelInitializer::DefineSubstance(dg_000_, "on-off_dsgca", diffusion_coef,
+  // Order: substance_name, diffusion_coefficient, decay_constant, resolution
+  ModelInitializer::DefineSubstance(dg_0_, "sac-gcl", diffusion_coef,
     decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_001_, "on-off_dsgcb", diffusion_coef,
+  ModelInitializer::DefineSubstance(dg_1_, "sac-inl", diffusion_coef,
     decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_002_, "on-off_dsgcc", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_003_, "on-off_dsgcd", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_004_, "on-off_m3", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_005_, "on-off_led", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_006_, "on-off_u", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_007_, "on-off_v", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_008_, "on-off_w", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_009_, "on-off_x", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_010_, "on-off_y", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_011_, "on-off_z", diffusion_coef,
-    decay_const, resolution);
-  // on
-  // 40, 40, 40, 40, 56, 20, 20, 150, 100, 100, 80, 60, 60, 50, 50, 34, 20, 20, 20
-  ModelInitializer::DefineSubstance(dg_100_, "on_dsgca", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_101_, "on_dsgcb", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_102_, "on_dsgcc", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_103_, "on_aplha", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_104_, "on_m2", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_105_, "on_m4", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_106_, "on_m5", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_107_, "on_o", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_108_, "on_p", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_109_, "on_q", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_110_, "on_r", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_111_, "on_s", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_112_, "on_t", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_113_, "on_u", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_114_, "on_v", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_115_, "on_w", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_116_, "on_x", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_117_, "on_y", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_118_, "on_z", diffusion_coef, decay_const,
-    resolution);
-  // off
-  // 40, 40, 63, 200, 350, 80, 20, 20, 60, 50, 40, 37
-  ModelInitializer::DefineSubstance(dg_200_, "off_aplhaa", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_201_, "off_aplhab", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_202_, "off_m1", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_203_, "off_j", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_204_, "off_mini_j", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_205_, "off_midi_j", diffusion_coef,
-    decay_const, resolution);
-  ModelInitializer::DefineSubstance(dg_206_, "off_u", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_207_, "off_v", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_208_, "off_w", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_209_, "off_x", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_210_, "off_y", diffusion_coef, decay_const,
-    resolution);
-  ModelInitializer::DefineSubstance(dg_211_, "off_z", diffusion_coef, decay_const,
-    resolution);
 
   cout << "Cells created and substances initialised" << endl;
 
