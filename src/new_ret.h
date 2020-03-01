@@ -32,7 +32,7 @@ inline int Simulate(int argc, const char** argv) {
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
-  int cell_density = 8600 ; // 8600 - 65% ~= 3000
+  int cell_density = 2450 ; // X - X% ~= 2500
   int num_cells = cell_density*((double)cube_dim/1000)*((double)cube_dim/1000);
   int grid_spacing = 4;
 
@@ -70,8 +70,8 @@ inline int Simulate(int argc, const char** argv) {
   }
   // without cell fate
   else {
-    CellCreator(param->min_bound_, param->max_bound_, 357, 0); // GCL
-    CellCreator(param->min_bound_, param->max_bound_, 357, 1); // INL
+    CellCreator(param->min_bound_, param->max_bound_, 1100, 0); // GCL
+    CellCreator(param->min_bound_, param->max_bound_, 1350, 1); // INL
   }
 
   // Order: substance_name, diffusion_coefficient, decay_constant, resolution
