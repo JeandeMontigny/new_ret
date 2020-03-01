@@ -28,8 +28,9 @@ namespace bdm {
         int cell_type = cell->GetCellType();
         double concentration = 0;
         Double3 gradient_gcl, gradient_inl, diff_gradient, gradient_z;
-        DiffusionGrid* dg = nullptr;
-
+        DiffusionGrid* dg_gcl = nullptr;
+        DiffusionGrid* dg_inl = nullptr;
+	
         bool with_fate = false;
         bool with_movement = true;
         double movement_threshold = 1.735;
@@ -73,6 +74,15 @@ namespace bdm {
           }
         } // end cell growth
 
+        /* -- gcl-inl cell separation -- */
+	if (cell_clock >= 2020) {
+	  if (cell_type == 0 && position[2] > 30) {
+	    cell->UpdatePosition({0, 0, -1});
+	  }
+	  if (cell_type == 1 && position[2] < 40) {
+	    cell->UpdatePosition({0, 0, 1});
+	  }
+	}
 
         /* -- cell movement -- */
         if (with_movement && cell_clock >= 200 && cell_clock < 2020
