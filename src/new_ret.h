@@ -28,7 +28,7 @@ inline int Simulate(int argc, const char** argv) {
   bool write_positions = true;
   bool write_swc = false;
   bool write_distance = true;
-  bool clean_result_dir = true;
+  bool clean_result_dir = false;
 
   int max_step = 2240; // 2240 = 13 days - 160 steps per day
   int cube_dim = 1000; // 1000
@@ -245,9 +245,11 @@ inline int Simulate(int argc, const char** argv) {
   // Run simulation
   cout << "Simulating.." << endl;
 
-  scheduler->Simulate(1);
+  WritePositions(0, my_seed);
 
+  scheduler->Simulate(1);
   AnkurDeath();
+  scheduler->Simulate(1);
 
   WritePositions(1, my_seed);
   
